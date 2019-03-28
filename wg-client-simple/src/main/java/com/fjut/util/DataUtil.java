@@ -10,6 +10,11 @@ import java.util.Date;
  */
 public class DataUtil {
 	
+	/**
+	 * 日期合理
+	 * @param birthday
+	 * @return
+	 */
 	public static boolean dateIsOk(Date birthday) {
 		return !(birthday.getTime() > new Date().getTime());
 	}
@@ -23,6 +28,17 @@ public class DataUtil {
 		return data == null || "".equals(data.trim());
 	}
 
+	/**
+	 * 数据检查
+	 * @return
+	 */
+	public static boolean dataCheck(String id, String userId, String userName, String password, Date birthday, 
+			String identityNum, String birthPlace, String address, String phone) {
+		return !DataUtil.isNull(id) && !DataUtil.isNull(userId) && !DataUtil.isNull(userName)  && !DataUtil.isNull(password) && DataUtil.dateIsOk(birthday)
+				&& !DataUtil.isNull(identityNum)  && !DataUtil.isNull(birthPlace)  && !DataUtil.isNull(address)  && !DataUtil.isNull(phone); 
+	}
+	
+	
 	public static void main(String[] args) throws Exception {
 		SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = sim.parse("2011-1-1");

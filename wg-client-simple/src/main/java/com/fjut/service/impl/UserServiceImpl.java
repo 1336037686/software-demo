@@ -127,8 +127,19 @@ public class UserServiceImpl implements UserService{
 	 */
 	@Override
 	public boolean updateUser(User user) {
+		user.setPassword(MD5Util.md5(user.getPassword()));
 		int result = userMapper.updateUser(user);
 		if(result > 0) return true;
+		return false;
+	}
+
+	/**
+	 * 根据id删除用户
+	 */
+	@Override
+	public boolean deleteUser(String id, String userId) {
+		int result = userMapper.deleteUserById(id, userId);
+		if(result == 1) return true;
 		return false;
 	}
 }

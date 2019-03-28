@@ -8,13 +8,17 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
+import com.fjut.pojo.ClientMSG;
 import com.fjut.pojo.Session;
 import com.fjut.pojo.User;
 import com.fjut.service.UserService;
@@ -32,6 +36,10 @@ import com.fjut.view.component.IndexPanel;
 @SuppressWarnings("all")
 public class HomePage extends JFrame {
 
+	@Autowired
+	@Qualifier("ClientMSG")
+	private ClientMSG clientMSG;
+	
 	private JPanel contentPane;
 
 	/**
@@ -63,9 +71,15 @@ public class HomePage extends JFrame {
 		
 		JMenuItem versionMenuItem = new JMenuItem("当前版本");
 		helpMenu.add(versionMenuItem);
+		versionMenuItem.addActionListener((e) -> {
+			JOptionPane.showMessageDialog(null, clientMSG.getVersion(), "当前版本", JOptionPane.INFORMATION_MESSAGE);
+		});
 		
 		JMenuItem aboutMeMenuItem = new JMenuItem("关于我们");
 		helpMenu.add(aboutMeMenuItem);
+		aboutMeMenuItem.addActionListener((e) -> {
+			JOptionPane.showMessageDialog(null, clientMSG.getAboutMe(), "关于我们", JOptionPane.INFORMATION_MESSAGE);
+		});
 		
 		Component horizontalGlue = Box.createHorizontalGlue();
 		menuBar.add(horizontalGlue);

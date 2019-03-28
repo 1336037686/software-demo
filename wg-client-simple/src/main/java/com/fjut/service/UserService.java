@@ -53,4 +53,12 @@ public interface UserService {
 	 * @return
 	 */
 	public boolean updateUser(User user);
+	
+	/**
+	 * 根据id删除用户
+	 * @param id
+	 * @param userId
+	 * @return
+	 */
+	public boolean deleteUser(String id, String userId);
 }

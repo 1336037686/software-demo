@@ -179,45 +179,56 @@ public class UserUpdatePage extends JFrame {
 		//修改用户信息
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				User user = new User();
-				//获取userId
-				String id = idField.getText();
-				String userId = userIdField.getText();
-				String userName = userNameField.getText();
-				String password = passwordField.getText();
-				Date birthday = datepick.getDate();
-				String identityNum = identityNumField.getText();
-				String birthPlace = birthPlaceField.getText();
-				String address = addressField.getText();
-				String phone = phoneField.getText();
-				
-				//数据检查
-				boolean dataCheckStatus = dataCheck(userId, userName, password, birthday, identityNum, birthPlace, address, phone);
-				if(!dataCheckStatus) {
-					JOptionPane.showMessageDialog(null, "填写错误，请重新填写", "提示", JOptionPane.ERROR_MESSAGE);
-					return;
+				if(JOptionPane.showConfirmDialog(null, "确定修改？") == 0) {
+					User user = new User();
+					//获取userId
+					String id = idField.getText();
+					String userId = userIdField.getText();
+					String userName = userNameField.getText();
+					String password = passwordField.getText();
+					Date birthday = datepick.getDate();
+					String identityNum = identityNumField.getText();
+					String birthPlace = birthPlaceField.getText();
+					String address = addressField.getText();
+					String phone = phoneField.getText();
+					
+					//数据检查
+					boolean dataCheckStatus = DataUtil.dataCheck(id, userId, userName, password, birthday, identityNum, birthPlace, address, phone);
+					if(!dataCheckStatus) {
+						JOptionPane.showMessageDialog(null, "填写错误，请重新填写", "提示", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					
+					//封装数据
+					user.setId(id);
+					user.setUserId(userId);
+					user.setUserName(userName);
+					user.setPassword(password);
+					user.setBirthday(birthday);
+					if(genderBoyRadio.isSelected()) {
+						user.setUserGender(1);
+					}else {
+						user.setUserGender(0);
+					}
+					user.setAddress(address);
+					user.setPhone(phone);
+					user.setIdentityNum(identityNum);
+					user.setBirthPlace(birthPlace);
+					user.setAge(DateUtil.getAgeByBirth(birthday));
+					User loginUser = (User) Session.getSession().get("user");
+					user.setPermission(loginUser.getPermission());
+					
+					//注册
+					boolean result = userService.updateUser(user);
+					if (result) {
+						JOptionPane.showMessageDialog(null, "修改成功", "提示", JOptionPane.INFORMATION_MESSAGE);
+						Session.getSession().put("user", userService.getUserByUserId(userId));
+						setVisible(false);
+						dispose();
+					} else {
+						JOptionPane.showMessageDialog(null, "修改失败", "提示", JOptionPane.ERROR_MESSAGE);
+					}
 				}
-				
-				//封装数据
-				user.setId(id);
-				user.setUserId(userId);
-				user.setUserName(userName);
-				user.setPassword(password);
-				user.setBirthday(birthday);
-				if(genderBoyRadio.isSelected()) {
-					user.setUserGender(1);
-				}else {
-					user.setUserGender(0);
-				}
-				user.setAddress(address);
-				user.setPhone(phone);
-				user.setIdentityNum(identityNum);
-				user.setBirthPlace(birthPlace);
-				user.setAge(DateUtil.getAgeByBirth(birthday));
-				user.setRegisterDay(new Date());
-				
-				//注册
-				System.out.println("update " + user);
 			}
 		});
 		btnSubmit.setBounds(71, 322, 93, 23);
@@ -262,16 +273,5 @@ public class UserUpdatePage extends JFrame {
 		}else {
 			genderGirlRadio.setSelected(true);
 		}
-	}
-	
-	/**
-	 * 数据检查
-	 * @return
-	 */
-	private boolean dataCheck(String userId, String userName, String password, Date birthday, 
-			String identityNum, String birthPlace, String address, String phone) {
-		
-		return !DataUtil.isNull(userId) && !DataUtil.isNull(userName)  && !DataUtil.isNull(password) && DataUtil.dateIsOk(birthday)
-				&& !DataUtil.isNull(identityNum)  && !DataUtil.isNull(birthPlace)  && !DataUtil.isNull(address)  && !DataUtil.isNull(phone); 
-	}
+	}	
 }
