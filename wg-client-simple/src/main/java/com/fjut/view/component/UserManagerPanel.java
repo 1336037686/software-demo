@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -23,6 +24,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import org.jdesktop.swingx.JXDatePicker;
 import org.springframework.context.annotation.Lazy;
@@ -57,17 +59,24 @@ public class UserManagerPanel extends JPanel {
 	private JTextField textField_7;
 	private JXDatePicker datepick;
 	private JTextField textField_8;
+	private JTable table;
+	
+	//表格数据
+	private Object[] columnNames = {"序号","用户代码", "用户姓名", "人员性别", "联系电话", "权限类别"};
+	private Object[][] rowData;
 
+    /*
+     * 疑问：
+     * 1. 为什么不能使用依赖注入
+     * 2. 为什么需要手动获取才可以
+     */
+	private UserService userService = SpringContextUtils.getBean(UserService.class);
+	
 	/**
 	 * Create the panel.
 	 */
 	public UserManagerPanel() {
-        /*
-         * 疑问：
-         * 1. 为什么不能使用依赖注入
-         * 2. 为什么需要手动获取才可以
-         */
-        UserService userService = SpringContextUtils.getBean(UserService.class);
+
 		
 		setBounds(0, 0, 1165, 730);
 		setLayout(null);
@@ -91,9 +100,19 @@ public class UserManagerPanel extends JPanel {
 		add(userSelectField);
 		userSelectField.setColumns(10);
 		
-		JButton btnNewButton = new JButton("搜索");
-		btnNewButton.setBounds(635, 10, 121, 23);
-		add(btnNewButton);
+		JButton searchBtn = new JButton("搜索");
+		searchBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String input = userSelectField.getText();
+				if(input == null || "".equals(input.trim())) {
+					JOptionPane.showMessageDialog(null, "输入不能为空", "提示", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				updateUserList(1, input);
+			}
+		});
+		searchBtn.setBounds(635, 10, 121, 23);
+		add(searchBtn);
 		
 		JPanel userListPanel = new JPanel();
 		
@@ -101,25 +120,22 @@ public class UserManagerPanel extends JPanel {
         userListPanel.setBorder(titleBorder);
 		userListPanel.setBounds(10, 54, 746, 661);
 		add(userListPanel);
-		
-        //使用滚动表格添加用户数据
-		//设置标题头
-        Object[] columnNames = {"序号","用户代码", "用户姓名", "人员性别", "联系电话", "权限类别"};
-        
+
+		        
         //设置表格数据
-        Object[][] rowData = userService.getAllUser();
+//       rowData = userService.getAllUser();
         
         // 表格所有行数据
-//        Object[][] rowData = {
-//                {1, "张三", 80, 80, 80, 240},
-//                {2, "John", 70, 80, 90, 240},
-//                {3, "Sue", 70, 70, 70, 210},
-//                {4, "Jane", 80, 70, 60, 210},
-//                {5, "Joe", 80, 70, 60, 210}
-//        };
+        Object[][] rowData = {
+                {1, "张三", 80, 80, 80, 240},
+                {2, "John", 70, 80, 90, 240},
+                {3, "Sue", 70, 70, 70, 210},
+                {4, "Jane", 80, 70, 60, 210},
+                {5, "Joe", 80, 70, 60, 210}
+        };
 
         //创建一个表格，指定 所有行数据 和 表头
-        JTable table = new JTable(rowData, columnNames);
+        table = new JTable(rowData, columnNames);
         table.setSelectionBackground(Color.CYAN); 							//设置选中背景
         table.setSelectionForeground(Color.BLACK);							//设置选中字体样式
         table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);		//设置表格自适应
@@ -255,6 +271,21 @@ public class UserManagerPanel extends JPanel {
 	    userMsgPanel.add(datepick);
 	    
 	    JButton button = new JButton("修改");
+	    button.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		String id = idFiled.getText();
+	    		String userId = userIdField.getText();
+	    		String password = passwordField.getText();
+	    		Date birthday = datepick.getDate();
+	    		String identityNum = idnumField.getText();
+	    		String birthPlace = birthPlaceField.getText();
+	    		String address = addressField.getText();
+	    		String phone = phoneField.getText();
+	    		
+//	    		User user = new User(userGender, birthday, identityNum, birthPlace, address, phone, permission, age, registerDate)
+	    		
+	    	}
+	    });
 	    button.setBounds(37, 607, 93, 23);
 	    userMsgPanel.add(button);
 	    
@@ -269,35 +300,38 @@ public class UserManagerPanel extends JPanel {
 			public void valueChanged(ListSelectionEvent e) {
 				if(e.getValueIsAdjusting()) {
 					String str = e.getSource().toString();
-					//获取当前行序号
-					int index = Integer.parseInt(str.substring(str.lastIndexOf("{") + 1, str.lastIndexOf("}")));
-					String userId = (String) rowData[index][1];
-					//获取选中的用户信息
-					User selectedUser = userService.getUserByUserId(userId);
-					if(selectedUser == null) {
-						JOptionPane.showMessageDialog(null, "查找出错", "提示", JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-					idFiled.setText(selectedUser.getId());
-					userIdField.setText(selectedUser.getUserId());
-					passwordField.setText(selectedUser.getPassword());
-					userNameField.setText(selectedUser.getUserName());
-					phoneField.setText(selectedUser.getPhone());
-					idnumField.setText(selectedUser.getIdentityNum());
-					birthPlaceField.setText(selectedUser.getBirthPlace());
-					addressField.setText(selectedUser.getAddress());
-					System.out.println(selectedUser.getBirthday());
-					//selectedUser.getBirthday() 设置生日，还未完成
-					datepick.setDate(selectedUser.getBirthday());
-					if(selectedUser.getUserGender() == 1) {
-						radioButtonBoy.setSelected(true);
-					}else {
-						radioButtonGirl.setSelected(true);
-					}
-					if(selectedUser.getPermission() == 1){
-						radioButtonAdmin.setSelected(true);
-					}else {
-						radioButtonOrdinary.setSelected(true);
+					//取出当前行
+					String indexStr = str.substring(str.lastIndexOf("{") + 1, str.lastIndexOf("}"));
+					if(str != null && !"".equals(str.trim()) && indexStr != null && !"".equals(indexStr.trim())) {	
+						//获取当前行序号
+						int index = Integer.parseInt(indexStr);
+						String userId = (String) rowData[index][1];
+						//获取选中的用户信息
+						User selectedUser = userService.getUserByUserId(userId);
+						if(selectedUser == null) {
+							JOptionPane.showMessageDialog(null, "查找出错", "提示", JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+						//封装数据
+						idFiled.setText(selectedUser.getId());
+						userIdField.setText(selectedUser.getUserId());
+						passwordField.setText(selectedUser.getPassword());
+						userNameField.setText(selectedUser.getUserName());
+						phoneField.setText(selectedUser.getPhone());
+						idnumField.setText(selectedUser.getIdentityNum());
+						birthPlaceField.setText(selectedUser.getBirthPlace());
+						addressField.setText(selectedUser.getAddress());
+						datepick.setDate(selectedUser.getBirthday());
+						if(selectedUser.getUserGender() == 1) {
+							radioButtonBoy.setSelected(true);
+						}else {
+							radioButtonGirl.setSelected(true);
+						}
+						if(selectedUser.getPermission() == 1){
+							radioButtonAdmin.setSelected(true);
+						}else {
+							radioButtonOrdinary.setSelected(true);
+						}
 					}
 				}
 			}
@@ -305,22 +339,28 @@ public class UserManagerPanel extends JPanel {
         
         //刷新
 		flushBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {	
-				Object[][] rowData = userService.getAllUser();
-				table.setModel(new AbstractTableModel() {
-		            public String getColumnName(int column) { return columnNames[column].toString(); }
-		            public int getRowCount() { return rowData.length; }
-		            public int getColumnCount() { return columnNames.length; }
-		            public Object getValueAt(int row, int col) { return rowData[row][col]; }
-		            public boolean isCellEditable(int row, int column) { return true; }
-		            public void setValueAt(Object value, int row, int col) {
-		                rowData[row][col] = value;
-		                fireTableCellUpdated(row, col);
-		            }
-		        });
-				table.repaint();
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("刷新");
+				updateUserList(0, null);
 			}
 		});
         
+	}
+	
+	/**
+	 * 更新用户列表
+	 * @param type 0 查找所有, 1 根据用户输入查找
+	 * @param input
+	 */
+	private void updateUserList(int type, String input) {
+		if(type == 0) {			
+			rowData = userService.getAllUser();
+		}
+		if(type == 1) {
+			rowData = userService.getSearchUser(input);
+		}
+		DefaultTableModel dataModel = new DefaultTableModel(rowData, columnNames);
+		table.setModel(dataModel);
+		table.revalidate();
 	}
 }

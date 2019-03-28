@@ -42,19 +42,21 @@ public class UserServiceImpl implements UserService{
 	 * 用户注册
 	 */
 	@Override
-	public void register(User user) {
+	public boolean register(User user) {
 		String userId = user.getUserId();
 		User findUser = userMapper.getUserByUserId(userId);
 		if(findUser != null) {
 			JOptionPane.showMessageDialog(null, "这个用户代码已经存在", "Message", JOptionPane.ERROR_MESSAGE);
-			return;
+			return false;
 		}
 		user.setPassword(MD5Util.md5(user.getPassword()));
 		int result = userMapper.addUser(user);
 		if(result == 1) {
 			JOptionPane.showMessageDialog(null, "添加成功", "Message", JOptionPane.INFORMATION_MESSAGE);
+			return true;
 		} else {
 			JOptionPane.showMessageDialog(null, "添加失败", "Message", JOptionPane.INFORMATION_MESSAGE);
+			return false;
 		}
 	}
 
@@ -65,7 +67,6 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Object[][] getAllUser() {
 		List<User> userList = userMapper.getAllUser();
-		System.out.println(userList);
 		if(userList != null) {			
 			Object[][] userMSG = new Object[userList.size()][6];
 			for (int i = 0; i < userList.size(); i++) {
@@ -97,6 +98,37 @@ public class UserServiceImpl implements UserService{
 	public boolean logOut() {
 		Object remove = Session.getSession().remove("user");
 		if(remove != null) return true;
+		return false;
+	}
+
+	/**
+	 * 查找用户
+	 */
+	@Override
+	public Object[][] getSearchUser(String input) {
+		List<User> userList = userMapper.getSearchUser(input);
+		if(userList != null && userList.size() > 0) {			
+			Object[][] userMSG = new Object[userList.size()][6];
+			for (int i = 0; i < userList.size(); i++) {
+				userMSG[i][0] = i + 1;
+				userMSG[i][1] = userList.get(i).getUserId();
+				userMSG[i][2] = userList.get(i).getUserName();
+				userMSG[i][3] = userList.get(i).getUserGender() == 1 ? "男" : "女";
+				userMSG[i][4] = userList.get(i).getPhone();
+				userMSG[i][5] = userList.get(i).getPermission() == 1 ? "管理员" : "普通员工";
+			}
+			return userMSG;
+		}
+		return new Object[0][0];
+	}
+
+	/**
+	 * 更新用户
+	 */
+	@Override
+	public boolean updateUser(User user) {
+		int result = userMapper.updateUser(user);
+		if(result > 0) return true;
 		return false;
 	}
 }

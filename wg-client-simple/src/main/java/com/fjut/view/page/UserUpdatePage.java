@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.fjut.pojo.Session;
 import com.fjut.pojo.User;
 import com.fjut.service.UserService;
 import com.fjut.util.DataUtil;
@@ -45,7 +46,7 @@ public class UserUpdatePage extends JFrame {
 	
 	@Autowired
 	private UserService userService;
-
+	
 	private JPanel contentPane;
 	private JTextField userIdField;
 	private JTextField userNameField;
@@ -55,7 +56,12 @@ public class UserUpdatePage extends JFrame {
     private JTextField birthPlaceField;
     private JTextField addressField;
     private JTextField phoneField;
-    private JTextField textField_1;
+    private JTextField idField;
+    
+    private JRadioButton genderBoyRadio;
+    private JRadioButton genderGirlRadio;
+    
+    
 
 	/**
 	 * Create the frame.
@@ -88,11 +94,11 @@ public class UserUpdatePage extends JFrame {
 		JLabel label_3 = new JLabel("性    别");
 		label_3.setBounds(71, 181, 80, 15);
 		
-		JRadioButton genderBoyRadio = new JRadioButton("男");
+		genderBoyRadio = new JRadioButton("男");
 		genderBoyRadio.setBounds(132, 177, 49, 23);
 		genderBoyRadio.setSelected(true);
 		
-		JRadioButton genderGirlRadio = new JRadioButton("女");
+		genderGirlRadio = new JRadioButton("女");
 		genderGirlRadio.setBounds(183, 177, 49, 23);
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
@@ -100,6 +106,7 @@ public class UserUpdatePage extends JFrame {
 		buttonGroup.add(genderGirlRadio);
 		
 		userIdField = new JTextField();
+		userIdField.setEnabled(false);
 		userIdField.setBounds(132, 95, 131, 21);
 		userIdField.setColumns(10);
 		
@@ -135,24 +142,7 @@ public class UserUpdatePage extends JFrame {
 		JLabel label_8 = new JLabel("密    码");
 		label_8.setBounds(71, 138, 80, 15);
 		contentPane.add(label_8);
-		
-		JLabel label_10 = new JLabel("权   限");
-		label_10.setBounds(281, 181, 80, 15);
-		contentPane.add(label_10);
-		
-		JRadioButton radioButtonAdmin = new JRadioButton("管理员");
-		radioButtonAdmin.setBounds(340, 177, 71, 23);
-		contentPane.add(radioButtonAdmin);
-		
-		JRadioButton radioButtonOrdinary = new JRadioButton("普通员工");
-		radioButtonOrdinary.setSelected(true);
-		radioButtonOrdinary.setBounds(413, 177, 89, 23);
-		contentPane.add(radioButtonOrdinary);
-		
-		ButtonGroup buttonGroup2 = new ButtonGroup();
-		buttonGroup2.add(radioButtonAdmin);
-		buttonGroup2.add(radioButtonOrdinary);
-		
+
 		userNameField = new JTextField();
 		userNameField.setColumns(10);
 		userNameField.setBounds(340, 95, 150, 21);
@@ -186,17 +176,16 @@ public class UserUpdatePage extends JFrame {
 		contentPane.add(phoneField);
 		
 		JButton btnSubmit = new JButton("修改");
-		//添加用户
+		//修改用户信息
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				User user = new User();
 				//获取userId
+				String id = idField.getText();
 				String userId = userIdField.getText();
 				String userName = userNameField.getText();
 				String password = passwordField.getText();
 				Date birthday = datepick.getDate();
-				boolean genderBoyRadioSelected = genderBoyRadio.isSelected();
-				boolean radioButtonAdminSelected = radioButtonAdmin.isSelected();
 				String identityNum = identityNumField.getText();
 				String birthPlace = birthPlaceField.getText();
 				String address = addressField.getText();
@@ -210,20 +199,15 @@ public class UserUpdatePage extends JFrame {
 				}
 				
 				//封装数据
-				user.setId(MD5Util.getMD5());
+				user.setId(id);
 				user.setUserId(userId);
 				user.setUserName(userName);
 				user.setPassword(password);
 				user.setBirthday(birthday);
-				if(genderBoyRadioSelected) {
+				if(genderBoyRadio.isSelected()) {
 					user.setUserGender(1);
 				}else {
 					user.setUserGender(0);
-				}
-				if(radioButtonAdminSelected) {
-					user.setPermission(1);
-				}else {
-					user.setPermission(0);
 				}
 				user.setAddress(address);
 				user.setPhone(phone);
@@ -233,7 +217,7 @@ public class UserUpdatePage extends JFrame {
 				user.setRegisterDay(new Date());
 				
 				//注册
-				userService.register(user);
+				System.out.println("update " + user);
 			}
 		});
 		btnSubmit.setBounds(71, 322, 93, 23);
@@ -247,11 +231,37 @@ public class UserUpdatePage extends JFrame {
 		label_11.setBounds(71, 61, 80, 15);
 		contentPane.add(label_11);
 		
-		textField_1 = new JTextField();
-		textField_1.setEnabled(false);
-		textField_1.setBounds(132, 58, 358, 21);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
+		idField = new JTextField();
+		idField.setEnabled(false);
+		idField.setBounds(132, 58, 358, 21);
+		contentPane.add(idField);
+		idField.setColumns(10);
+		initUpdatePage();
+	}
+	
+	/**
+	 * 初始化
+	 */
+	private void initUpdatePage() {
+		User user = (User) Session.getSession().get("user");
+		if(user == null) {
+			JOptionPane.showMessageDialog(null, "查找出错", "提示", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		idField.setText(user.getId());
+		userIdField.setText(user.getUserId());
+		userNameField.setText(user.getUserName());
+		passwordField.setText(user.getPassword());
+		datepick.setDate(user.getBirthday());
+		birthPlaceField.setText(user.getBirthPlace());
+		addressField.setText(user.getAddress());
+		phoneField.setText(user.getPhone());
+		identityNumField.setText(user.getIdentityNum());
+		if(user.getUserGender() == 1) {
+			genderBoyRadio.setSelected(true);
+		}else {
+			genderGirlRadio.setSelected(true);
+		}
 	}
 	
 	/**

@@ -233,7 +233,11 @@ public class UserAddPage extends JFrame {
 				user.setRegisterDay(new Date());
 				
 				//注册
-				userService.register(user);
+				boolean register = userService.register(user);
+				if(register) {
+					setVisible(false);
+					dispose();
+				}
 			}
 		});
 		btnSubmit.setBounds(71, 311, 93, 23);
