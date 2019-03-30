@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -41,7 +42,7 @@ import com.fjut.view.component.DateComponent;
 @Component("UserAddPage")
 @Scope("prototype")
 @SuppressWarnings("all")
-public class UserAddPage extends JFrame {
+public class UserAddPage extends JDialog {
 	
 	@Autowired
 	private UserService userService;
@@ -57,11 +58,12 @@ public class UserAddPage extends JFrame {
     private JTextField phoneField;
 
 	/**
-	 * Create the frame.
+	 * Create the dialog.
 	 */
 	public UserAddPage() {
 		setTitle("用户添加");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setModal(true);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		//设置窗口大小
 		setBounds(100, 100, 573, 404);
 		//设置居中显示

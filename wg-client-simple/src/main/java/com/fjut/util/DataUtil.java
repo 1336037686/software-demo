@@ -11,9 +11,7 @@ import java.util.Date;
 public class DataUtil {
 	
 	/**
-	 * 日期合理
-	 * @param birthday
-	 * @return
+	 * 日期合理性检查
 	 */
 	public static boolean dateIsOk(Date birthday) {
 		return !(birthday.getTime() > new Date().getTime());
@@ -21,22 +19,45 @@ public class DataUtil {
 	
 	/**
 	 * 是否为空
-	 * @param data
-	 * @return
 	 */
 	public static boolean isNull(String data) {
 		return data == null || "".equals(data.trim());
 	}
+	
+	/**
+	 * 查找数组中当前值的下标位置
+	 * @param array 查找数组
+	 * @param target 目标查找值
+	 * @return 返回下标
+	 */
+	public static int getTargetIndex(String[] array, String target) {
+		if(array != null) {
+			for (int i = 0; i < array.length; i++) {
+				if(array[i].equals(target)) {
+					return i;
+				}
+			}
+		}
+		return 0;
+	}
 
 	/**
-	 * 数据检查
-	 * @return
+	 * User数据检查
 	 */
 	public static boolean dataCheck(String id, String userId, String userName, String password, Date birthday, 
 			String identityNum, String birthPlace, String address, String phone) {
 		return !DataUtil.isNull(id) && !DataUtil.isNull(userId) && !DataUtil.isNull(userName)  && !DataUtil.isNull(password) && DataUtil.dateIsOk(birthday)
 				&& !DataUtil.isNull(identityNum)  && !DataUtil.isNull(birthPlace)  && !DataUtil.isNull(address)  && !DataUtil.isNull(phone); 
 	}
+	
+	/**
+	 * 物料数据检查
+	 */
+	public static boolean dataCheck(String materialId, String materialName, String materialUnit, String materialModel) {
+		return !DataUtil.isNull(materialId) && !DataUtil.isNull(materialName) && !DataUtil.isNull(materialUnit) && !DataUtil.isNull(materialUnit);
+	}
+	
+	
 	
 	
 	public static void main(String[] args) throws Exception {

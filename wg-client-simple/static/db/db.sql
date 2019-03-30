@@ -2,7 +2,7 @@
 create database software_simple_class;
 
 /*用户表*/
-CREATE TABLE USER (
+CREATE TABLE user (
 	id NVARCHAR(200) NOT NULL,				/*id*/
 	userid NVARCHAR(200) NOT NULL,			/*人员代码*/
 	PASSWORD NVARCHAR(200) NOT NULL,		/*密码*/
@@ -16,6 +16,20 @@ CREATE TABLE USER (
 	address NVARCHAR(200),					/*地址*/
 	phone NVARCHAR(200),					/*电话*/
 	permission INT DEFAULT 0,  				/*权限 管理员1，普通员工0*/
+	PRIMARY KEY(id)
+);
+
+/*物料表*/
+CREATE TABLE materials (
+	id NVARCHAR(200) NOT NULL,				/*物料ID*/
+	materialsId NVARCHAR(200) NOT NULL,		/*物料代码*/
+	materialsName NVARCHAR(200) NOT NULL,	/*物料名称*/
+	model NVARCHAR(200) NOT NULL,			/*型号规格*/
+	unit NVARCHAR(200) NOT NULL,			/*计量单位*/
+	stockQuantity INT NOT NULL DEFAULT 0,	/*库存数量*/
+	remarks NVARCHAR(5000),					/*物料备注*/
+	createDate DATETIME,					/*档案创建日期*/
+	isDelete INT NOT NULL DEFAULT 0,		/*是否删除 1删除 0未删除*/
 	PRIMARY KEY(id)
 );
 

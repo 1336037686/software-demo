@@ -1,5 +1,7 @@
 package com.fjut.pojo;
 
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +12,11 @@ import lombok.Setter;
  */
 @Getter@Setter
 public class Materials {
+	
+	/**
+	 * id
+	 */
+	private String id;
 	
 	/**
 	 * 物料代码
@@ -40,24 +47,41 @@ public class Materials {
 	 * 物料备注
 	 */
 	private String remarks;
+	
+	/**
+	 * 档案创建日期
+	 */
+	private Date createDate;
+	
+	/**
+	 * 是否删除
+	 */
+	private int isDelete;
 
+	
 	public Materials() {
 		
 	}
 
-	public Materials(String materialsId, String materialsName, String model, String unit, int stockQuantity,
-			String remarks) {
+
+	public Materials(String id, String materialsId, String materialsName, String model, String unit, int stockQuantity,
+			String remarks, Date createDate, int isDelete) {
+		super();
+		this.id = id;
 		this.materialsId = materialsId;
 		this.materialsName = materialsName;
 		this.model = model;
 		this.unit = unit;
 		this.stockQuantity = stockQuantity;
 		this.remarks = remarks;
+		this.createDate = createDate;
+		this.isDelete = isDelete;
 	}
 
 	@Override
 	public String toString() {
-		return "Materials [materialsId=" + materialsId + ", materialsName=" + materialsName + ", model=" + model
-				+ ", unit=" + unit + ", stockQuantity=" + stockQuantity + ", remarks=" + remarks + "]";
+		return "Materials [id=" + id + ", materialsId=" + materialsId + ", materialsName=" + materialsName + ", model="
+				+ model + ", unit=" + unit + ", stockQuantity=" + stockQuantity + ", remarks=" + remarks
+				+ ", createDate=" + createDate + ", isDelete=" + isDelete + "]";
 	}
 }

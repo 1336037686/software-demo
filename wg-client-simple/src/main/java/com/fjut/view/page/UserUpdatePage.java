@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -42,7 +43,7 @@ import com.fjut.view.component.DateComponent;
 @Component("UserUpdatePage")
 @Scope("prototype")
 @SuppressWarnings("all")
-public class UserUpdatePage extends JFrame {
+public class UserUpdatePage extends JDialog {
 	
 	@Autowired
 	private UserService userService;
@@ -67,7 +68,8 @@ public class UserUpdatePage extends JFrame {
 	 * Create the frame.
 	 */
 	public UserUpdatePage() {
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setModal(true);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		//设置窗口大小
 		setBounds(100, 100, 573, 404);
 		//设置居中显示

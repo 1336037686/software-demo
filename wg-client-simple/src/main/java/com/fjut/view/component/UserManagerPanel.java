@@ -121,9 +121,7 @@ public class UserManagerPanel extends JPanel {
 		add(searchBtn);
 
 		JPanel userListPanel = new JPanel();
-
-		Border titleBorder = BorderFactory.createTitledBorder("用户列表");
-		userListPanel.setBorder(titleBorder);
+		userListPanel.setBorder(BorderFactory.createTitledBorder("用户列表"));
 		userListPanel.setBounds(10, 54, 746, 661);
 		add(userListPanel);
 
@@ -141,24 +139,21 @@ public class UserManagerPanel extends JPanel {
 
 		// 创建一个表格，指定 所有行数据 和 表头
 		table = new JTable(rowData, columnNames);
-		table.setSelectionBackground(Color.CYAN); // 设置选中背景
-		table.setSelectionForeground(Color.BLACK); // 设置选中字体样式
+		table.setSelectionBackground(Color.CYAN); 						// 设置选中背景
+		table.setSelectionForeground(Color.BLACK); 						// 设置选中字体样式
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS); // 设置表格自适应
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // 设置每次只能选择一行
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 	// 设置每次只能选择一行
 		// 表头设置
-		table.getTableHeader().setResizingAllowed(false); // 设置不允许手动改变列宽
-		table.getTableHeader().setReorderingAllowed(false); // 设置不允许拖动重新排序各列
-		// 添加表头
-		userListPanel.add(table.getTableHeader());
+		table.getTableHeader().setResizingAllowed(false); 				// 设置不允许手动改变列宽
+		table.getTableHeader().setReorderingAllowed(false); 			// 设置不允许拖动重新排序各列
+		userListPanel.add(table.getTableHeader());						// 添加表头
 		userListPanel.setLayout(new BorderLayout(5, 5));
-		// 将表格添加到滚动面板中
-		JScrollPane scrollPane = new JScrollPane(table);
+		JScrollPane scrollPane = new JScrollPane(table); 				// 将表格添加到滚动面板中
 		userListPanel.add(scrollPane);
 
 		// 用户信息管理界面
 		JPanel userMsgPanel = new JPanel();
-		Border titleBorder2 = BorderFactory.createTitledBorder("用户信息管理");
-		userMsgPanel.setBorder(titleBorder2);
+		userMsgPanel.setBorder(BorderFactory.createTitledBorder("用户信息管理"));
 		userMsgPanel.setBounds(766, 54, 389, 661);
 		add(userMsgPanel);
 		userMsgPanel.setLayout(null);

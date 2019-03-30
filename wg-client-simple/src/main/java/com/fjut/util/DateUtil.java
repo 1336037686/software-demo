@@ -40,10 +40,17 @@ public class DateUtil {
 		return age;
 	}
 	
-	public static void main(String[] args) throws Exception {
+	
+	public static String dateFormate(Date date) {
 		SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = sim.parse("1997-11-16");
-		int year = getAgeByBirth(date);
-		System.out.println(year);
+		return sim.format(date);
+	}
+	
+	public static void main(String[] args) throws Exception {
+//		SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
+//		Date date = sim.parse("1997-11-16");
+//		int year = getAgeByBirth(date);
+//		System.out.println(year);
+		System.out.println(dateFormate(new Date()));
 	}
 }

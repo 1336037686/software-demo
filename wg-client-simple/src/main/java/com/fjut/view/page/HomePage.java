@@ -124,8 +124,13 @@ public class HomePage extends JFrame {
 			if(loginUser.getPermission() == 1) {
 				//用户管理主页
 				JPanel userManagerPanel = (JPanel) SpringContextUtils.getBean("UserManagerPanel");
-				contentTablePane.addTab("用户管理主页", new ImageIcon("E:\\DevelopProjects\\Java_Project\\eclipse_project\\software-class\\wg-client-simple\\static\\images\\usermanager.png"), userManagerPanel, null);
+				contentTablePane.addTab("用户管理", new ImageIcon("E:\\DevelopProjects\\Java_Project\\eclipse_project\\software-class\\wg-client-simple\\static\\images\\usermanager.png"), userManagerPanel, null);
 			}
 		}
+		
+		//物料管理主页
+		JPanel materialManagerPanel = (JPanel) SpringContextUtils.getBean("MaterialManagerPanel");
+		contentTablePane.addTab("物料管理", new ImageIcon("E:\\DevelopProjects\\Java_Project\\eclipse_project\\software-class\\wg-client-simple\\static\\images\\usermanager.png"), materialManagerPanel, null);
+		
 	}
 }
