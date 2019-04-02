@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
  * @author LGX
  *
  */
+@SuppressWarnings("all")
 public class LogManagerPanel extends JPanel {
 
 	/**

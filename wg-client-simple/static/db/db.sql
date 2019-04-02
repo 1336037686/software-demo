@@ -33,3 +33,24 @@ CREATE TABLE materials (
 	PRIMARY KEY(id)
 );
 
+/*进出仓主表*/
+CREATE TABLE materialsSell (
+	id NVARCHAR(200) NOT NULL,				/*物料ID*/
+	date DATETIME,							/*创建日期*/
+	userId NVARCHAR(200) NOT NULL,			/*操作人员代码*/
+	remarks NVARCHAR(5000),					/*物料备注*/
+	type INT NOT NULL DEFAULT 1,			/*进出仓类别 进:1,出:0*/
+	PRIMARY KEY(id)
+);
+
+/*进出仓详情表*/
+CREATE TABLE materialsSellDetail (
+	id INT AUTO_INCREMENT,					/*ID*/
+	materialsSellId NVARCHAR(200) NOT NULL,	/*进出仓单号*/
+	materialsId NVARCHAR(200) NOT NULL,		/*物料id*/
+	total INT NOT NULL,						/*进出仓数量*/
+	PRIMARY KEY(id)
+);
+
+SELECT * FROM materialsSellDetail
+SELECT * FROM materialsSell

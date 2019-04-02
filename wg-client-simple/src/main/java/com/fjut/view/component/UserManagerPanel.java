@@ -27,6 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import org.jdesktop.swingx.JXDatePicker;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -62,7 +63,7 @@ public class UserManagerPanel extends JPanel {
 	private JTextField textField_7;
 	private JXDatePicker datepick;
 	private JTextField textField_8;
-	private JTable table;
+	private TableComponent table;
 
 	private JRadioButton radioButtonBoy;
 	private JRadioButton radioButtonGirl;
@@ -138,14 +139,7 @@ public class UserManagerPanel extends JPanel {
 //			};
 
 		// 创建一个表格，指定 所有行数据 和 表头
-		table = new JTable(rowData, columnNames);
-		table.setSelectionBackground(Color.CYAN); 						// 设置选中背景
-		table.setSelectionForeground(Color.BLACK); 						// 设置选中字体样式
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS); // 设置表格自适应
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 	// 设置每次只能选择一行
-		// 表头设置
-		table.getTableHeader().setResizingAllowed(false); 				// 设置不允许手动改变列宽
-		table.getTableHeader().setReorderingAllowed(false); 			// 设置不允许拖动重新排序各列
+		table = new TableComponent(rowData, columnNames);
 		userListPanel.add(table.getTableHeader());						// 添加表头
 		userListPanel.setLayout(new BorderLayout(5, 5));
 		JScrollPane scrollPane = new JScrollPane(table); 				// 将表格添加到滚动面板中
@@ -423,9 +417,8 @@ public class UserManagerPanel extends JPanel {
 		if (type == 1) {
 			rowData = userService.getSearchUser(input);
 		}
-		DefaultTableModel dataModel = new DefaultTableModel(rowData, columnNames);
-		table.setModel(dataModel);
-		table.revalidate();
+		table.updateModel(rowData, columnNames);
+		clearField();
 	}
 	
 	/**

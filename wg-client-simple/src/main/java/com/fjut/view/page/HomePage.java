@@ -18,9 +18,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
-import com.fjut.pojo.ClientMSG;
 import com.fjut.pojo.Session;
 import com.fjut.pojo.User;
+import com.fjut.pojo.vo.ClientMSG;
 import com.fjut.service.UserService;
 import com.fjut.util.SpringContextUtils;
 import com.fjut.view.component.IndexPanel;
@@ -130,7 +130,12 @@ public class HomePage extends JFrame {
 		
 		//物料管理主页
 		JPanel materialManagerPanel = (JPanel) SpringContextUtils.getBean("MaterialManagerPanel");
-		contentTablePane.addTab("物料管理", new ImageIcon("E:\\DevelopProjects\\Java_Project\\eclipse_project\\software-class\\wg-client-simple\\static\\images\\usermanager.png"), materialManagerPanel, null);
+		contentTablePane.addTab("物料管理", new ImageIcon("E:\\DevelopProjects\\Java_Project\\eclipse_project\\software-class\\wg-client-simple\\static\\images\\material.png"), materialManagerPanel, null);
+		
+		//进出仓管理主页 TradingManagerPanel
+		JPanel tradingManagerPanel = (JPanel) SpringContextUtils.getBean("TradingManagerPanel");
+		contentTablePane.addTab("进出仓管理", new ImageIcon("E:\\DevelopProjects\\Java_Project\\eclipse_project\\software-class\\wg-client-simple\\static\\images\\materialsSell.png"), tradingManagerPanel, null);
+		
 		
 	}
 }

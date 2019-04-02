@@ -1,5 +1,7 @@
 package com.fjut.service;
 
+import java.util.List;
+
 import com.fjut.pojo.Materials;
 
 /**
@@ -20,9 +22,19 @@ public interface MaterialsService {
 	public Object[][] getAllMaterial();
 	
 	/**
+	 * 查找所有物料信息
+	 */
+	public List<Materials> getAllMaterialList();
+	
+	/**
 	 * 根据id获取物料对象
 	 */
 	public Materials getMaterialsByMaterialsId(String materialsId);
+	
+	/**
+	 * 根据关键字查询物料信息 
+	 */
+	public Object[][] getSearchMaterial(String input);
 	
 	
 	/**

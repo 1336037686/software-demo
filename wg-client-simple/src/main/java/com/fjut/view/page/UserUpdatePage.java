@@ -35,7 +35,7 @@ import com.fjut.util.MD5Util;
 import com.fjut.view.component.DateComponent;
 
 /**
- * 用户添加页面
+ * 用户修改页面
  * @author LGX
  *
  */
@@ -253,7 +253,7 @@ public class UserUpdatePage extends JDialog {
 	}
 	
 	/**
-	 * 初始化
+	 * 初始化，封装用户数据
 	 */
 	private void initUpdatePage() {
 		User user = (User) Session.getSession().get("user");

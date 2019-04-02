@@ -142,4 +142,12 @@ public class UserServiceImpl implements UserService{
 		if(result == 1) return true;
 		return false;
 	}
+
+	/**
+	 * 获取所有用户
+	 */
+	@Override
+	public List<User> getAllUserList() {
+		return userMapper.getAllUser();
+	}
 }

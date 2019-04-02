@@ -53,7 +53,7 @@ public class MaterialManagerPanel extends JPanel {
 	private JTextField materialsCreateDateField;
 	private JTextArea materialRemarksFiled;
 	private JComboBox materialUnitField;
-	private JTable table;
+	private TableComponent table;
 	
 	private String[] materialUnits = {"件", "套", "公斤", "吨", "升", "米", "毫米", "个"};
 	private MaterialsService materialsService = SpringContextUtils.getBean(MaterialsService.class);
@@ -85,6 +85,16 @@ public class MaterialManagerPanel extends JPanel {
 		materialSearchField.setColumns(10);
 		
 		JButton searchBtn = new JButton("搜索");
+		searchBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String searchInput = materialSearchField.getText();
+				if(DataUtil.isNull(searchInput)) {
+					JOptionPane.showMessageDialog(null, "输入为空，请重新输入", "提示", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				updateUserList(1, searchInput);
+			}
+		});
 		searchBtn.setBounds(660, 10, 93, 23);
 		add(searchBtn);
 		
@@ -107,14 +117,7 @@ public class MaterialManagerPanel extends JPanel {
 //		};
 //		
 		// 创建一个表格，指定 所有行数据 和 表头
-		table = new JTable(rowData, columnNames);
-		table.setSelectionBackground(Color.CYAN); // 设置选中背景
-		table.setSelectionForeground(Color.BLACK); // 设置选中字体样式
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS); // 设置表格自适应
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // 设置每次只能选择一行
-		// 表头设置
-		table.getTableHeader().setResizingAllowed(false); // 设置不允许手动改变列宽
-		table.getTableHeader().setReorderingAllowed(false); // 设置不允许拖动重新排序各列
+		table = new TableComponent(rowData, columnNames);
 		// 添加表头
 		materialListPanel.add(table.getTableHeader());
 		materialListPanel.setLayout(new BorderLayout(5, 5));
@@ -211,6 +214,7 @@ public class MaterialManagerPanel extends JPanel {
 					boolean result = materialsService.updateMaterials(new Materials(id, materialId, materialName, materialModel, materialUnit, 0, materialRemarks, null, 0));
 					if(result) {
 						JOptionPane.showMessageDialog(null, "修改成功", "提示", JOptionPane.INFORMATION_MESSAGE);
+						clearField();
 					}else {
 						JOptionPane.showMessageDialog(null, "修改失败", "提示", JOptionPane.ERROR_MESSAGE);
 					}
@@ -232,6 +236,7 @@ public class MaterialManagerPanel extends JPanel {
 					boolean result = materialsService.deleteMaterials(id);
 					if(result) {
 						JOptionPane.showMessageDialog(null, "删除成功", "提示", JOptionPane.INFORMATION_MESSAGE);
+						clearField();
 					}else {
 						JOptionPane.showMessageDialog(null, "删除失败", "提示", JOptionPane.ERROR_MESSAGE);
 					}
@@ -307,12 +312,11 @@ public class MaterialManagerPanel extends JPanel {
 		if (type == 0) {
 			rowData = materialsService.getAllMaterial();
 		}
-//		if (type == 1) {
-//			rowData = userService.getSearchUser(input);
-//		}
-		DefaultTableModel dataModel = new DefaultTableModel(rowData, columnNames);
-		table.setModel(dataModel);
-		table.revalidate();
+		if (type == 1) {
+			rowData = materialsService.getSearchMaterial(input);
+		}
+		table.updateModel(rowData, columnNames);
+		clearField();
 	}
 	
 	/**

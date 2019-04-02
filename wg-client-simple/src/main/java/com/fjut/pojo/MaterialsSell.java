@@ -30,7 +30,7 @@ public class MaterialsSell {
 	/**
 	 * 备注
 	 */
-	private String remark;
+	private String remarks;
 	
 	/**
 	 * 进出仓类型. 进:1,出:0
@@ -41,17 +41,17 @@ public class MaterialsSell {
 
 	}
 
-	public MaterialsSell(String id, Date date, String userId, String remark, int type) {
+	public MaterialsSell(String id, Date date, String userId, String remarks, int type) {
 		this.id = id;
 		this.date = date;
 		this.userId = userId;
-		this.remark = remark;
+		this.remarks = remarks;
 		this.type = type;
 	}
 
 	@Override
 	public String toString() {
-		return "MaterialsSell [id=" + id + ", date=" + date + ", userId=" + userId + ", remark=" + remark + ", type="
+		return "MaterialsSell [id=" + id + ", date=" + date + ", userId=" + userId + ", remarks=" + remarks + ", type="
 				+ type + "]";
 	}
 }

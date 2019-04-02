@@ -1,5 +1,7 @@
 package com.fjut.service;
 
+import java.util.List;
+
 import com.fjut.pojo.User;
 
 /**
@@ -32,6 +34,13 @@ public interface UserService {
 	 * @return
 	 */
 	public Object[][] getAllUser();
+	
+	/**
+	 * 获取所有用户
+	 * @return
+	 */
+	public List<User> getAllUserList();
+	
 	
 	/**
 	 * 根据UserID获取用户

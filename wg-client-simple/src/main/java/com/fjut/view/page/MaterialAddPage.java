@@ -32,6 +32,11 @@ import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 
+/**
+ * 物料档案添加界面
+ * @author LGX
+ *
+ */
 @Lazy
 @Scope("prototype")
 @Component("MaterialAddPage")
@@ -162,7 +167,5 @@ public class MaterialAddPage extends JDialog {
 		});
 		resetBtn.setBounds(552, 457, 93, 23);
 		contentPanel.add(resetBtn);
-		
-
 	}
 }

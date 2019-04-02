@@ -8,10 +8,11 @@ import org.springframework.stereotype.Component;
 import java.awt.Color;
 
 /**
- * 主页面板
+ * Home主页面板
  * @author LGX
  *
  */
+@SuppressWarnings("all")
 public class IndexPanel extends JPanel {
 
 	/**
@@ -21,7 +22,6 @@ public class IndexPanel extends JPanel {
 		setBorder(new LineBorder(new Color(0, 0, 0)));
 		setBounds(0, 0, 1165, 725);
 		
-
+		
 	}
-
 }

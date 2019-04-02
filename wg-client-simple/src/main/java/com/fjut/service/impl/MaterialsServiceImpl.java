@@ -20,6 +20,7 @@ import com.fjut.util.DateUtil;
  *
  */
 @Service
+@SuppressWarnings("all")
 public class MaterialsServiceImpl implements MaterialsService {
 
 	@Autowired
@@ -93,4 +94,32 @@ public class MaterialsServiceImpl implements MaterialsService {
 		return false;
 	}
 
+	/**
+	 * 根据关键字查找
+	 */
+	@Override
+	public Object[][] getSearchMaterial(String input) {
+		List<Materials> materialsList = materialsMapper.getSearchMaterials(input);
+		if(materialsList != null) {			
+			Object[][] materialMSG = new Object[materialsList.size()][6];
+			for (int i = 0; i < materialsList.size(); i++) {
+				materialMSG[i][0] = i + 1;
+				materialMSG[i][1] = materialsList.get(i).getMaterialsId();
+				materialMSG[i][2] = materialsList.get(i).getMaterialsName();
+				materialMSG[i][3] = materialsList.get(i).getModel();
+				materialMSG[i][4] = materialsList.get(i).getUnit();
+				materialMSG[i][5] = DateUtil.dateFormate(materialsList.get(i).getCreateDate());
+			}
+			return materialMSG;
+		}
+		return new Object[0][0];
+	}
+
+	/**
+	 * 获取所有的物料信息
+	 */
+	@Override
+	public List<Materials> getAllMaterialList() {
+		return materialsMapper.getAllMaterials();
+	}
 }

@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("all")
 public class TestPage extends JFrame {
 
 	private JPanel contentPane;
