@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
  * @author LGX
  *
  */
+@SuppressWarnings("all")
 public class TableComponent extends JTable{
 
 	public TableComponent() {
@@ -24,8 +25,9 @@ public class TableComponent extends JTable{
 		setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS); 		// 设置表格自适应
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 			// 设置每次只能选择一行
 																		// 表头设置
-		getTableHeader().setResizingAllowed(false); 					// 设置不允许手动改变列宽
+		getTableHeader().setResizingAllowed(true); 						// 设置不允许手动改变列宽
 		getTableHeader().setReorderingAllowed(false); 					// 设置不允许拖动重新排序各列
+		setVisible(true);
 	}
 	
 	/**

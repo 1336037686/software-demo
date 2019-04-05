@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
+@SuppressWarnings("all")
 public class SpringContextUtils implements ApplicationContextAware {
 
     /**

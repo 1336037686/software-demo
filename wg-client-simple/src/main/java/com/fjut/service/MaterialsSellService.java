@@ -18,6 +18,9 @@ public interface MaterialsSellService {
 	 */
 	public boolean addMaterialsSellIn(MaterialsSell materialsSell, List<MaterialsSellDetail> materialsSellDetailsList);
 	
-	
+	/**
+	 * 查找所有物料信息
+	 */
+	public Object[][] getAllMaterialSell();
 
 }

@@ -11,6 +11,11 @@ import org.jdesktop.swingx.JXDatePicker;
 
 import com.eltima.components.ui.DatePicker;
 
+/**
+ * 日期组件
+ * @author LGX
+ *
+ */
 public class DateComponent {
 
 	private int x;

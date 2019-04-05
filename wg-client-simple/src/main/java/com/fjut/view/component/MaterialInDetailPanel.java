@@ -31,9 +31,9 @@ import java.awt.event.ActionEvent;
 public class MaterialInDetailPanel extends JPanel {
 	
 	private JButton okBtn;
-	private JButton updateBtn;
+	private JButton updateBtn;						
 	
-	private MaterialsSellDetail materialsSellDetail;													//
+	private MaterialsSellDetail materialsSellDetail;													//存储数据
 	private boolean isOk = false; 																		//是否确认
 
 	/**
@@ -102,7 +102,6 @@ public class MaterialInDetailPanel extends JPanel {
 	
 	/**
 	 * 判断当前进仓单号已确认
-	 * @return
 	 */
 	public boolean isOK() {
 		return this.isOk;
@@ -110,7 +109,6 @@ public class MaterialInDetailPanel extends JPanel {
 
 	/**
 	 * 获取数据
-	 * @return
 	 */
 	public MaterialsSellDetail getMaterialsSellDetailData() {
 		return materialsSellDetail;

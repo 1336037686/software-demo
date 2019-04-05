@@ -36,11 +36,8 @@
 			<version>2.0.0</version>
 		</dependency>
 
-<!-- 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-devtools</artifactId> 
+			<scope>runtime</scope> </dependency> -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -51,6 +48,29 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- 自定义jar包 -->
+		<dependency>
+			<groupId>my-datepicker</groupId>
+			<artifactId>my-datepicker</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/datepicker.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>my-miglayout15-swing</groupId>
+			<artifactId>my-miglayout15-swing</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/miglayout15-swing.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>my-swingx-all-1.6.3</groupId>
+			<artifactId>my-swingx-all-1.6.3</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/swingx-all-1.6.3.jar</systemPath>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -58,8 +78,18 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<executable>true</executable>
+					<includeSystemScope>true</includeSystemScope>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
