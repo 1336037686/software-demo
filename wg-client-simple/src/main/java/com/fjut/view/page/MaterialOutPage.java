@@ -2,7 +2,6 @@ package com.fjut.view.page;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -39,6 +38,7 @@ import com.fjut.util.MD5Util;
 import com.fjut.util.SpringContextUtils;
 import com.fjut.view.component.DateComponent;
 import com.fjut.view.component.MaterialInDetailPanel;
+import com.fjut.view.component.MaterialOutDetailPanel;
 
 /**
  * 添加进仓界面
@@ -47,9 +47,9 @@ import com.fjut.view.component.MaterialInDetailPanel;
  */
 @Lazy
 @Scope("prototype")
-@Component("MaterialInPage")
+@Component("MaterialOutPage")
 @SuppressWarnings("all")
-public class MaterialInPage extends JDialog {
+public class MaterialOutPage extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField materialShellIdField;
@@ -70,7 +70,7 @@ public class MaterialInPage extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			MaterialInPage dialog = new MaterialInPage();
+			MaterialOutPage dialog = new MaterialOutPage();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -81,7 +81,7 @@ public class MaterialInPage extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public MaterialInPage() {
+	public MaterialOutPage() {
 		setModal(true);
 		setBounds(100, 100, 683, 618);
 		setLocationRelativeTo(null);
@@ -127,11 +127,11 @@ public class MaterialInPage extends JDialog {
 		inOutTypeField = new JTextField();
 		inOutTypeField.setEnabled(false);
 		inOutTypeField.setBounds(317, 35, 120, 21);
-		inOutTypeField.setText("进仓");
+		inOutTypeField.setText("出仓");
 		contentPanel.add(inOutTypeField);
 		inOutTypeField.setColumns(10);
 		
-		JLabel label_4 = new JLabel("进仓备注");
+		JLabel label_4 = new JLabel("出仓备注");
 		label_4.setBounds(10, 423, 54, 15);
 		contentPanel.add(label_4);
 		
@@ -156,7 +156,7 @@ public class MaterialInPage extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				inOutListJScrollPane.setViewportView(inOutListPanel);
 				inOutListPanel.setPreferredSize(new Dimension(647, 15 + 45 * detailNum));
-				JPanel detailPanel = new MaterialInDetailPanel(10, 15 + 45 * detailNum, detailNum, md5Id, materialsList);
+				JPanel detailPanel = new MaterialOutDetailPanel(10, 15 + 45 * detailNum, detailNum, md5Id, materialsList);
 				detailPanel.setVisible(true);
 				inOutListPanel.add(detailPanel);
 				inOutListPanel.repaint();
@@ -197,13 +197,12 @@ public class MaterialInPage extends JDialog {
 				List<MaterialsSellDetail> materialsSellDetailsList = new ArrayList<>();
 				if(detailPanelList != null) {
 					for (JPanel jPanel : detailPanelList) {
-						MaterialInDetailPanel m = (MaterialInDetailPanel) jPanel;
+						MaterialOutDetailPanel m = (MaterialOutDetailPanel) jPanel;
 						if(m.isOK() == false) {
 							JOptionPane.showMessageDialog(null, "请全部确认后提交", "提示", JOptionPane.ERROR_MESSAGE);
 							return;
 						}
 						materialsSellDetailsList.add(m.getMaterialsSellDetailData());
-						System.out.println(m.isOK() +  ":" + m.getMaterialsSellDetailData());
 					}
 				}
 				
@@ -213,15 +212,15 @@ public class MaterialInPage extends JDialog {
 				}
 				
 				ComboxVo userVo = (ComboxVo) handlerUserField.getSelectedItem();
-				MaterialsSell materialsSell = new MaterialsSell(md5Id, (Date)datepick.getValue(), userVo.getKey(), remarksField.getText(), 1);
+				MaterialsSell materialsSell = new MaterialsSell(md5Id, (Date)datepick.getValue(), userVo.getKey(), remarksField.getText(), 0);
 				try {
 					if(materialsSellService.addMaterialsSellIn(materialsSell, materialsSellDetailsList)) {
-						JOptionPane.showMessageDialog(null, "进仓成功", "提示", JOptionPane.INFORMATION_MESSAGE);					
+						JOptionPane.showMessageDialog(null, "出仓成功", "提示", JOptionPane.INFORMATION_MESSAGE);					
 						setVisible(false);
 						dispose();
 					}
 				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "进仓失败", "提示", JOptionPane.ERROR_MESSAGE);		
+					JOptionPane.showMessageDialog(null, "出仓失败", "提示", JOptionPane.ERROR_MESSAGE);		
 				}
 			}
 		});

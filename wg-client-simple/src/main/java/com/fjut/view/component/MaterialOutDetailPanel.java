@@ -22,6 +22,7 @@ import com.fjut.util.DataUtil;
 import com.fjut.util.MD5Util;
 
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
 import java.awt.event.ActionEvent;
 
 /**
@@ -30,20 +31,18 @@ import java.awt.event.ActionEvent;
  *
  */
 @SuppressWarnings("all")
-public class MaterialInDetailPanel extends JPanel {
-	
-	public static Set<String> selectMaterial = new HashSet<>();
-	
+public class MaterialOutDetailPanel extends JPanel {
 	private JButton okBtn;
 	private JButton updateBtn;						
 	
 	private MaterialsSellDetail materialsSellDetail;													//存储数据
 	private boolean isOk = false; 																		//是否确认
+	private JTextField textField;
 
 	/**
 	 * Create the panel. 627, 43
 	 */
-	public MaterialInDetailPanel(int x, int y, int index, String materialsSellId, List<Materials> materialList) {
+	public MaterialOutDetailPanel(int x, int y, int index, String materialsSellId, List<Materials> materialList) {
 		setLayout(null);
 		JLabel lblNewLabel = new JLabel("物料选择");
 		add(lblNewLabel);
@@ -56,23 +55,48 @@ public class MaterialInDetailPanel extends JPanel {
 				materialComboBox.addItem(new ComboxVo(m.getId(), m.getMaterialsName()));
 			}
 		}
-		materialComboBox.setBounds(74, 11, 132, 21);
+		materialComboBox.setBounds(74, 11, 98, 21);
 		
+		
+		JLabel label = new JLabel("剩余");
+		label.setBounds(182, 14, 33, 15);
+		add(label);
+		
+		textField = new JTextField();
+		textField.setEnabled(false);
+		textField.setBounds(216, 11, 80, 21);
+		add(textField);
+		textField.setColumns(10);
+		if(materialList.size() > 0) {			
+			textField.setText(materialList.get(0).getStockQuantity() + "");
+		}
+
 		JLabel label_6 = new JLabel("数量");
 		add(label_6);
-		label_6.setBounds(250, 14, 54, 15);
+		label_6.setBounds(306, 14, 54, 15);
 		
 		JTextField sumField = new JTextField();
 		add(sumField);
-		sumField.setBounds(289, 11, 105, 21);
+		sumField.setBounds(344, 11, 66, 21);
 		sumField.setColumns(10);
+		
+		//下拉选监听
+		materialComboBox.addItemListener((e) -> {
+			if (e.getStateChange() == ItemEvent.SELECTED) {
+				ComboxVo vo = (ComboxVo) e.getItem();
+				Materials materials = getMaterialById(vo.getKey(), materialList);
+				textField.setText(materials.getStockQuantity() + "");
+            }
+		});
+		
 		
 		okBtn = new JButton("确认");
 		okBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ComboxVo materialSelect = (ComboxVo) materialComboBox.getSelectedItem();
+				
 				String sumStr = sumField.getText();
-				if(selectMaterial.contains(materialSelect.getKey())) {
+				if(MaterialInDetailPanel.selectMaterial.contains(materialSelect.getKey())) {
 					JOptionPane.showMessageDialog(null, "不能重复添加", "提示", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
@@ -85,13 +109,17 @@ public class MaterialInDetailPanel extends JPanel {
 					JOptionPane.showMessageDialog(null, "数量不能小于或等于0", "提示", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				if(total > getMaterialById(materialSelect.getKey(), materialList).getStockQuantity()) {
+					JOptionPane.showMessageDialog(null, "数量大于库存", "提示", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				isOk = true;
 				okBtn.setEnabled(false);
 				updateBtn.setEnabled(true);
 				materialComboBox.setEnabled(false);
 				sumField.setEnabled(false);
-				selectMaterial.add(materialSelect.getKey());
-				materialsSellDetail = new MaterialsSellDetail(0, materialsSellId, materialSelect.getKey(), total);
+				MaterialInDetailPanel.selectMaterial.add(materialSelect.getKey());
+				materialsSellDetail = new MaterialsSellDetail(0, materialsSellId, materialSelect.getKey(), -total);
 			}
 		});
 		add(okBtn);
@@ -102,7 +130,7 @@ public class MaterialInDetailPanel extends JPanel {
 		updateBtn.setEnabled(false);
 		updateBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selectMaterial.remove(materialsSellDetail.getMaterialsId());
+				MaterialInDetailPanel.selectMaterial.remove(materialsSellDetail.getMaterialsId());
 				isOk = false;
 				okBtn.setEnabled(true);
 				updateBtn.setEnabled(false);
@@ -112,6 +140,7 @@ public class MaterialInDetailPanel extends JPanel {
 		});
 		updateBtn.setBounds(517, 10, 75, 23);
 		add(updateBtn);
+
 	}
 	
 	/**
@@ -126,6 +155,16 @@ public class MaterialInDetailPanel extends JPanel {
 	 */
 	public MaterialsSellDetail getMaterialsSellDetailData() {
 		return materialsSellDetail;
+	}
+	
+	public Materials getMaterialById(String id, List<Materials> materialsList) {
+		if(materialsList == null) return null;
+		for (Materials materials : materialsList) {
+			if(materials.getId().equals(id)) {
+				return materials;
+			}
+		}
+		return null;
 	}
 	
 }

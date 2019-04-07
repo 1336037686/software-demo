@@ -40,11 +40,11 @@ public interface MaterialsService {
 	/**
 	 * 更新物料信息
 	 */
-	public boolean updateMaterials(Materials materials);
+	public boolean updateMaterials(Materials materials) throws Exception;
 	
 	/**
 	 * 删除物料信息
 	 */
-	public boolean deleteMaterials(String id);
+	public boolean deleteMaterials(String id) throws Exception;
 	
 }

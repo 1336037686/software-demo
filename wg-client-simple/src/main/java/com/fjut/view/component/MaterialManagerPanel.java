@@ -27,6 +27,7 @@ import java.awt.event.ActionListener;
 import java.util.Date;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -194,30 +195,30 @@ public class MaterialManagerPanel extends JPanel {
 		updateBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(JOptionPane.showConfirmDialog(null, "确认修改？") == 0) {
-					String id = idField.getText();
-					if(DataUtil.isNull(id)) {
-						JOptionPane.showMessageDialog(null, "请先选择一条记录", "提示", JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-					String materialId = materialIdField.getText();
-					String materialRemarks = materialRemarksFiled.getText();
-					String materialModel = materialModelField.getText();
-					String materialName = materialNameField.getText();
-					String materialUnit = (String) materialUnitField.getSelectedItem();
-					
-					boolean dataCheck = DataUtil.dataCheck(materialId, materialName, materialUnit, materialModel);
-					if(!dataCheck) {
-						JOptionPane.showMessageDialog(null, "填写错误", "提示", JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-					
-					boolean result = materialsService.updateMaterials(new Materials(id, materialId, materialName, materialModel, materialUnit, 0, materialRemarks, null, 0));
-					if(result) {
-						JOptionPane.showMessageDialog(null, "修改成功", "提示", JOptionPane.INFORMATION_MESSAGE);
-						clearField();
-					}else {
-						JOptionPane.showMessageDialog(null, "修改失败", "提示", JOptionPane.ERROR_MESSAGE);
-					}
+						String id = idField.getText();
+						if(DataUtil.isNull(id)) {
+							JOptionPane.showMessageDialog(null, "请先选择一条记录", "提示", JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+						String materialId = materialIdField.getText();
+						String materialRemarks = materialRemarksFiled.getText();
+						String materialModel = materialModelField.getText();
+						String materialName = materialNameField.getText();
+						String materialUnit = (String) materialUnitField.getSelectedItem();
+						
+						boolean dataCheck = DataUtil.dataCheck(materialId, materialName, materialUnit, materialModel);
+						if(!dataCheck) {
+							JOptionPane.showMessageDialog(null, "填写错误", "提示", JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+						try {
+							if(materialsService.updateMaterials(new Materials(id, materialId, materialName, materialModel, materialUnit, 0, materialRemarks, null, 0))) {
+								JOptionPane.showMessageDialog(null, "修改成功", "提示", JOptionPane.INFORMATION_MESSAGE);
+								clearField();
+							}
+						} catch (Exception e1) {
+							JOptionPane.showMessageDialog(null, "修改失败", "提示", JOptionPane.ERROR_MESSAGE);
+						}
 				}
 			}
 		});
@@ -228,18 +229,19 @@ public class MaterialManagerPanel extends JPanel {
 		deleteBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(JOptionPane.showConfirmDialog(null, "确认删除？") == 0) {
-					String id = idField.getText();
-					if(DataUtil.isNull(id)) {
-						JOptionPane.showMessageDialog(null, "请先选择一条记录", "提示", JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-					boolean result = materialsService.deleteMaterials(id);
-					if(result) {
-						JOptionPane.showMessageDialog(null, "删除成功", "提示", JOptionPane.INFORMATION_MESSAGE);
-						clearField();
-					}else {
-						JOptionPane.showMessageDialog(null, "删除失败", "提示", JOptionPane.ERROR_MESSAGE);
-					}
+						String id = idField.getText();
+						if(DataUtil.isNull(id)) {
+							JOptionPane.showMessageDialog(null, "请先选择一条记录", "提示", JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+						try {
+							if(materialsService.deleteMaterials(id)) {
+								JOptionPane.showMessageDialog(null, "删除成功", "提示", JOptionPane.INFORMATION_MESSAGE);
+								clearField();
+							}
+						} catch (Exception e1) {
+							JOptionPane.showMessageDialog(null, "删除失败", "提示", JOptionPane.ERROR_MESSAGE);
+						}
 				}
 			}
 		});

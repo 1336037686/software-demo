@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 import com.fjut.pojo.User;
 import com.fjut.service.MaterialsSellDetailService;
 import com.fjut.service.MaterialsSellService;
+import com.fjut.util.DataUtil;
 import com.fjut.util.SpringContextUtils;
+import com.fjut.view.page.MaterialsSellUpdatePage;
 import com.fjut.view.page.RemarksPage;
 
 import javax.swing.BorderFactory;
@@ -25,6 +27,7 @@ import javax.swing.JTable;
 
 import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 
 /**
@@ -53,6 +56,7 @@ public class TradingManagerPanel extends JPanel {
 	
 	//选中的删除对象
 	private Object[] selectTarget;
+	private Object[] selectChildTarget;
 	
 	/**
 	 * Create the panel.
@@ -72,6 +76,13 @@ public class TradingManagerPanel extends JPanel {
 		add(materialInBtn);
 		
 		JButton materialOutBtn = new JButton("出仓");
+		materialOutBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("ok");
+				JDialog materialOutPage = (JDialog) SpringContextUtils.getBean("MaterialOutPage");
+				materialOutPage.setVisible(true);
+			}
+		});
 		materialOutBtn.setBounds(113, 10, 93, 23);
 		add(materialOutBtn);
 		
@@ -85,32 +96,56 @@ public class TradingManagerPanel extends JPanel {
 		materialShellInfoPanel.setBorder(BorderFactory.createTitledBorder("进出仓详情"));
 		add(materialShellInfoPanel);
 		materialShellInfoPanel.setLayout(null);
+		materialShellInfoPanel.setLayout(null);
 		
 		JPanel materialShellDetailPanel = new JPanel();
 		materialShellDetailPanel.setBounds(10, 21, 473, 553);
 		materialShellInfoPanel.add(materialShellDetailPanel);
 		
-		JButton updateBtn = new JButton("修改");
-		updateBtn.setBounds(10, 584, 93, 23);
-		materialShellInfoPanel.add(updateBtn);
+//		JButton deleteBtn = new JButton("删除");
+//		deleteBtn.setBounds(40, 584, 93, 23);
+//		materialShellInfoPanel.add(deleteBtn);
+//		deleteBtn.addActionListener((e) -> {
+//			if(selectChildTarget == null) {
+//				JOptionPane.showMessageDialog(null, "请选择需要查看的记录", "提示", JOptionPane.ERROR_MESSAGE);
+//				return;
+//			}
+//			//删除
+//			if(JOptionPane.showConfirmDialog(null, "确定删除【" + selectChildTarget[1] + "】？") == 0) {
+//				try {
+//					if(materialsSellDetailService.deleteMaterialsSellDetailById((int)selectChildTarget[3])) {
+//						JOptionPane.showMessageDialog(null, "删除成功", "提示", JOptionPane.INFORMATION_MESSAGE);
+//						updateTable();
+//					}
+//				} catch (Exception e1) {
+//					JOptionPane.showMessageDialog(null, "删除失败", "提示", JOptionPane.ERROR_MESSAGE);
+//				}
+//			}
+//		});
 		
-		JButton deleteBtn = new JButton("删除");
-		deleteBtn.setBounds(144, 584, 93, 23);
-		materialShellInfoPanel.add(deleteBtn);
-		
-		JButton dropBtn = new JButton("删除记录");
-		dropBtn.setBounds(390, 584, 93, 23);
-		materialShellInfoPanel.add(dropBtn);
-		dropBtn.addActionListener((e) -> {
-			if(selectTarget == null) {
-				JOptionPane.showMessageDialog(null, "请选择需要删除的记录", "提示", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			//删除
-		});
+//		JButton dropBtn = new JButton("删除记录");
+//		dropBtn.setBounds(376, 584, 93, 23);
+//		materialShellInfoPanel.add(dropBtn);
+//		dropBtn.addActionListener((e) -> {
+//			if(selectTarget == null) {
+//				JOptionPane.showMessageDialog(null, "请选择需要删除的记录", "提示", JOptionPane.ERROR_MESSAGE);
+//				return;
+//			}
+//			//删除
+//			if(JOptionPane.showConfirmDialog(null, "确定删除当前【" + selectTarget[1] + "】订单？") == 0) {
+//				try {
+//					if(materialsSellService.deleteMaterialSell(selectTarget[1].toString())) {
+//						JOptionPane.showMessageDialog(null, "删除成功", "提示", JOptionPane.INFORMATION_MESSAGE);
+//						updateTable();
+//					}
+//				} catch (Exception e1) {
+//					JOptionPane.showMessageDialog(null, "删除失败", "提示", JOptionPane.ERROR_MESSAGE);
+//				}
+//			}
+//		});
 		
 		JButton remarksBtn = new JButton("查看备注");
-		remarksBtn.setBounds(274, 584, 93, 23);
+		remarksBtn.setBounds(214, 584, 93, 23);
 		materialShellInfoPanel.add(remarksBtn);
 		remarksBtn.addActionListener((e) -> {
 			if(selectTarget == null) {
@@ -128,6 +163,16 @@ public class TradingManagerPanel extends JPanel {
 		JButton searchBtn = new JButton("搜索");
 		searchBtn.setBounds(665, 10, 93, 23);
 		add(searchBtn);
+		searchBtn.addActionListener((e) -> {
+			String input = searchInputField.getText();
+			if(DataUtil.isNull(input)) {
+				JOptionPane.showMessageDialog(null, "输入不能为空", "提示", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			rowData1 = materialsSellService.searchMaterialSell(input);
+			updateList(table1, rowData1, columnNames1);
+			updateList(table2, new Object[0][0], columnNames2);
+		});
 		
 		JButton flushBtn = new JButton("刷新");
 		flushBtn.setBounds(218, 10, 93, 23);
@@ -135,6 +180,7 @@ public class TradingManagerPanel extends JPanel {
 		
 		//表格1
 		rowData1 = materialsSellService.getAllMaterialSell();
+//		rowData1 = new Object[0][0];
 		table1 = new TableComponent(rowData1, columnNames1);
 		materialShellListPanel.add(table1.getTableHeader());						// 添加表头
 		materialShellListPanel.setLayout(new BorderLayout(5, 5));
@@ -142,9 +188,10 @@ public class TradingManagerPanel extends JPanel {
 		
 		//表格2
 		table2 = new TableComponent(new Object[0][0], columnNames2);
-		materialShellInfoPanel.add(table2.getTableHeader());						// 添加表头
-		materialShellInfoPanel.setLayout(new BorderLayout(5, 5));
-		materialShellInfoPanel.add(new JScrollPane(table2));
+		materialShellInfoPanel.add(table2.getTableHeader());
+		JScrollPane scrollPane = new JScrollPane(table2);
+		scrollPane.setBounds(6, 17, 481, 620);
+		materialShellInfoPanel.add(scrollPane);
 		
 		// 设置表格1监听事件
 		table1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -157,7 +204,7 @@ public class TradingManagerPanel extends JPanel {
 						String id = (String) rowData1[index][1];
 						selectTarget = rowData1[index];
 						rowData2 = materialsSellDetailService.MaterialsSellDetailByMaterialsSellId(id);
-						updateUserList(table2, rowData2, columnNames2);
+						updateList(table2, rowData2, columnNames2);
 					}
 				}
 			}
@@ -171,6 +218,7 @@ public class TradingManagerPanel extends JPanel {
 					String indexStr = str.substring(str.lastIndexOf("{") + 1, str.lastIndexOf("}"));
 					if (str != null && !"".equals(str.trim()) && indexStr != null && !"".equals(indexStr.trim())) {
 						int index = Integer.parseInt(indexStr);
+						selectChildTarget = rowData2[index];
 						int id = (int) rowData2[index][3];
 						System.out.println(id);
 						
@@ -182,10 +230,7 @@ public class TradingManagerPanel extends JPanel {
 		// 刷新
 		flushBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				rowData1 = materialsSellService.getAllMaterialSell();
-				updateUserList(table1, rowData1, columnNames1);
-				//清空详情
-				updateUserList(table2, new Object[0][0], columnNames2);
+				updateTable();
 			}
 		});
 	}
@@ -195,9 +240,20 @@ public class TradingManagerPanel extends JPanel {
 	 * @param type
 	 * @param input
 	 */
-	private void updateUserList(TableComponent table, Object[][] rowData, Object[] columnNames) {
+	private void updateList(TableComponent table, Object[][] rowData, Object[] columnNames) {
 		table.updateModel(rowData, columnNames);
 	}
 	
-	
+	public void updateTable() {
+		rowData1 = materialsSellService.getAllMaterialSell();
+		updateList(table1, rowData1, columnNames1);
+		
+		//清空详情
+		updateList(table2, new Object[0][0], columnNames2);
+		
+		//清空选中
+		selectChildTarget = null;
+		selectTarget = null;
+	}
+
 }

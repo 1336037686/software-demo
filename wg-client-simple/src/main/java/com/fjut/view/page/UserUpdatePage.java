@@ -62,8 +62,6 @@ public class UserUpdatePage extends JDialog {
     private JRadioButton genderBoyRadio;
     private JRadioButton genderGirlRadio;
     
-    
-
 	/**
 	 * Create the frame.
 	 */

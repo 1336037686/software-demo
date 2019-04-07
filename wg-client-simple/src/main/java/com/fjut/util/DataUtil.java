@@ -11,13 +11,6 @@ import java.util.Date;
 public class DataUtil {
 	
 	/**
-	 * 日期合理性检查
-	 */
-	public static boolean dateIsOk(Date birthday) {
-		return !(birthday.getTime() > new Date().getTime());
-	}
-	
-	/**
 	 * 是否为空
 	 */
 	public static boolean isNull(String data) {
@@ -40,6 +33,27 @@ public class DataUtil {
 		}
 		return 0;
 	}
+	
+	/**
+	 * 当前字符串是否是数字字符串
+	 * @param str
+	 * @return
+	 */
+	public static boolean isIntStr(String str) {
+		try {
+			Integer.parseInt(str);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * 日期合理性检查
+	 */
+	public static boolean dateIsOk(Date birthday) {
+		return !(birthday.getTime() > new Date().getTime());
+	}
 
 	/**
 	 * User数据检查
@@ -56,9 +70,6 @@ public class DataUtil {
 	public static boolean dataCheck(String materialId, String materialName, String materialUnit, String materialModel) {
 		return !DataUtil.isNull(materialId) && !DataUtil.isNull(materialName) && !DataUtil.isNull(materialUnit) && !DataUtil.isNull(materialUnit);
 	}
-	
-	
-	
 	
 	public static void main(String[] args) throws Exception {
 		SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");

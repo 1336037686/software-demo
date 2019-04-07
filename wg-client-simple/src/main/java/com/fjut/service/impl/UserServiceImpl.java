@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Object[][] getSearchUser(String input) {
 		List<User> userList = userMapper.getSearchUser(input);
-		if(userList != null && userList.size() > 0) {			
+		if(userList != null && userList.size() >= 0) {			
 			Object[][] userMSG = new Object[userList.size()][6];
 			for (int i = 0; i < userList.size(); i++) {
 				userMSG[i][0] = i + 1;

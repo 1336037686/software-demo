@@ -48,6 +48,22 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- POI -->
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi</artifactId>
+		    <version>3.17</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>3.17</version>
+		</dependency>
+		
+
 
 		<!-- 自定义jar包 -->
 		<dependency>
@@ -70,6 +86,20 @@
 			<version>1.0</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/resources/lib/swingx-all-1.6.3.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>my-jcommon-1.0.0</groupId>
+			<artifactId>my-jcommon-1.0.0</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/jcommon-1.0.0.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>my-jfreechart-1.0.1</groupId>
+			<artifactId>my-jfreechart-1.0.1</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/jfreechart-1.0.1.jar</systemPath>
 		</dependency>
 	</dependencies>
 

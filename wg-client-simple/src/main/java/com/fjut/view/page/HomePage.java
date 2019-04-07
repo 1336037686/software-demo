@@ -136,6 +136,10 @@ public class HomePage extends JFrame {
 		JPanel tradingManagerPanel = (JPanel) SpringContextUtils.getBean("TradingManagerPanel");
 		contentTablePane.addTab("进出仓管理", new ImageIcon("E:\\DevelopProjects\\Java_Project\\eclipse_project\\software-class\\wg-client-simple\\static\\images\\materialsSell.png"), tradingManagerPanel, null);
 		
+		//报表管理主页 TradingManagerPanel
+		JPanel formManagerPanel = (JPanel) SpringContextUtils.getBean("FormManagerPanel");
+		contentTablePane.addTab("报表管理", new ImageIcon("E:\\DevelopProjects\\Java_Project\\eclipse_project\\software-class\\wg-client-simple\\static\\images\\materialsSell.png"), formManagerPanel, null);
+		
 		
 	}
 }

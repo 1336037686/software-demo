@@ -79,7 +79,7 @@ public class MaterialsServiceImpl implements MaterialsService {
 	 */
 	@Override
 	public boolean updateMaterials(Materials materials) {
-		if(materialsMapper.updateMaterial(materials) > 0) {
+		if(materialsMapper.updateMaterial(materials) >= 0) {
 			return true;
 		}
 		return false;
@@ -90,7 +90,7 @@ public class MaterialsServiceImpl implements MaterialsService {
 	 */
 	@Override
 	public boolean deleteMaterials(String id) {
-		if(materialsMapper.deleteMaterial(id) > 0) return true;
+		if(materialsMapper.deleteMaterial(id) >= 0) return true;
 		return false;
 	}
 

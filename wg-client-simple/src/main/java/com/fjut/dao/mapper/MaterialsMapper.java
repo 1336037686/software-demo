@@ -69,5 +69,6 @@ public interface MaterialsMapper {
 	 */
 	@Update("update materials set isDelete = 1 where id = #{id}")
 	public int deleteMaterial(String id);
+	
 
 }

@@ -1,22 +1,21 @@
 package com.fjut.view.page;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Font;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import java.awt.Font;
 import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 
 /**
  * 备注显示界面
  * @author LGX
  *
  */
+@SuppressWarnings("all")
 public class RemarksPage extends JDialog {
 	
 	private final JPanel contentPanel = new JPanel();
