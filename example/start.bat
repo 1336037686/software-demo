@@ -1,0 +1,1 @@
+java -jar wg-client-simple.jar

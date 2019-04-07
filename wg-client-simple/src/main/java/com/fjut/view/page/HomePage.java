@@ -20,9 +20,11 @@ import org.springframework.context.annotation.Scope;
 
 import com.fjut.pojo.Session;
 import com.fjut.pojo.User;
+import com.fjut.pojo.Version;
 import com.fjut.pojo.vo.ClientMSG;
 import com.fjut.service.UserService;
 import com.fjut.util.SpringContextUtils;
+import com.fjut.util.UpdateUtil;
 import com.fjut.view.component.IndexPanel;
 
 /**
@@ -39,6 +41,9 @@ public class HomePage extends JFrame {
 	@Autowired
 	@Qualifier("ClientMSG")
 	private ClientMSG clientMSG;
+	
+	@Autowired
+	private UpdateUtil updateUtil;
 	
 	private JPanel contentPane;
 
@@ -68,6 +73,20 @@ public class HomePage extends JFrame {
 		
 		JMenuItem checkMenuItem = new JMenuItem("检查更新");
 		helpMenu.add(checkMenuItem);
+		checkMenuItem.addActionListener((e) -> {
+			Version version = updateUtil.getInfoData();
+			if(version != null) {				
+				String currVersion = clientMSG.getVersion().substring(clientMSG.getVersion().lastIndexOf(" ") + 1);
+				double cv = Double.parseDouble(currVersion);
+				if(version.getVersion() == cv) {
+					JOptionPane.showMessageDialog(null, "当前已经是最新版本", "提示", JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+				if(version.getVersion() > cv) {
+					new UpdatePage(version).setVisible(true);
+				}
+			}
+		});
 		
 		JMenuItem versionMenuItem = new JMenuItem("当前版本");
 		helpMenu.add(versionMenuItem);
