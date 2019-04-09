@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fjut.pojo.ResultInfo;
 import com.fjut.pojo.Version;
 
 @RestController
@@ -26,7 +27,15 @@ public class FileHandlerController {
 	 * 单文件上传 文件上传名为xxxxx-版本.jar
 	 */
 	@RequestMapping(value = "/upload")
-	public String upload(@RequestParam("file") MultipartFile file) {
+	public ResultInfo upload(@RequestParam("file") MultipartFile file) {
+		ResultInfo result = new ResultInfo();
+		
+        if (file.isEmpty()) {
+            result.setCode(400);
+            result.setMsg("文件为空，请重新上传");
+            return result;
+        }
+        
 		try {
 			// 获取文件名
 			String fileName = file.getOriginalFilename();
@@ -42,18 +51,21 @@ public class FileHandlerController {
 				dest.getParentFile().mkdirs();// 新建文件夹
 			}
 			file.transferTo(dest);// 文件写入
-			// 上传的文件名为：小程序快速入门.docx
-			Version.version = Double
-					.parseDouble(fileName.substring(fileName.lastIndexOf("-") + 1, fileName.lastIndexOf(".")));
+			
+			Version.version = Double.parseDouble(fileName.substring(fileName.lastIndexOf("-") + 1, fileName.lastIndexOf(".")));
 			Version.filePath = "http://" + ip + ":8080/file/" + fileName;
 			Version.fileSize = file.getSize();
 			System.out.println(Version.version + ":" + Version.filePath);
 
-			return "上传成功,当前版本【" + Version.version + ":" + Version.filePath + ":" + Version.fileSize + "】";
+            result.setCode(200);
+            result.setMsg("文件上传成功");
+            result.setInfo(Version.version + "");
+            return result;
 		} catch (Exception e) {
-			e.printStackTrace();
+            result.setCode(500);
+            result.setMsg("文件上传发生异常！");
+            return result;
 		}
-		return "上传失败,当前版本【" + Version.version + ":" + Version.filePath + ":" + Version.fileSize + "】";
 	}
 	
 	/**

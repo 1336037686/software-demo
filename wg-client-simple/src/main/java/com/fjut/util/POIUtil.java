@@ -50,7 +50,7 @@ public class POIUtil {
 			XSSFWorkbook wb = new XSSFWorkbook();
 			XSSFSheet sheet = wb.createSheet("学生信息表");
 			XSSFRow header = sheet.createRow(num++);
-			for (int i = num; i < columnNames1.length; i++) {
+			for (int i = 0; i < columnNames1.length; i++) {
 				header.createCell(i).setCellValue(columnNames1[i]);
 			}
 			for (int i = 0; i < data1.length; i++) {

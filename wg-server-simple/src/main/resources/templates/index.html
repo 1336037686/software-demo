@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Title</title>
+    <link rel="stylesheet" href="/webjars/layui/2.4.5/css/layui.css">
+    <style>
+        .bg{
+            margin: 0;
+            border: 0;
+            background:url(bg2.jpg);
+            position:fixed;
+            top: 0;
+            left: 0;
+            width:100%;
+            height:100%;
+            min-width: 100px;
+            z-index:-10;
+            zoom: 1;
+            background-color: #fff;
+            background-repeat: no-repeat;
+            background-size: cover;
+            -webkit-background-size: cover;
+            -o-background-size: cover;
+            background-position: center 0;
+        }
+    </style>
+</head>
+<body class="bg">
+   	<div class="layui-row">
+   		<div class="layui-col-md1 layui-col-md-offset11" style="margin-top: 10px">
+   			<button class="layui-btn layui-btn-radius layui-btn-primary layui-btn-sm" style="margin-left: 50px">历史版本</button>
+   		</div>
+   	</div>
+    <div class="layui-row" style="margin-top: 70px">
+        <div class="layui-row">
+            <div class="layui-col-md4 layui-col-md-offset4">
+                <h1 style="margin-bottom: 40px;font-size: 70px;font-style: italic;font-weight: bold;text-align: center;color: white">
+                    Update Hosting
+                    <p style="font-size: 30px" id="cversion">Current Version V 2.1</p>
+                </h1>
+            </div>
+        </div>
+
+        <div class="layui-col-md4 layui-col-md-offset4">
+            <div class="layui-upload-drag layui-btn-radius" id="uploadBtn" style="width: 100%;height: 100%;opacity: 1.0">
+                <i class="layui-icon" style="font-size: 60px;color: black"></i>
+                <p style="font-size: 20px">点击上传，或将更新文件文件拖拽到此处</p>
+            </div>
+        </div>
+    </div>
+	
+	<script src="/webjars/jquery/1.11.3/jquery.js"></script>
+    <script src="/webjars/layui/2.4.5/layui.js"></script>
+    <script>
+    	$(function(){
+    		  $.get("/info", function(result){
+    			  	$("#cversion").html('Current Version V ' + result.version)
+    		  }); 
+    	})
+	    layui.use('upload', function(){
+            var upload = layui.upload; 									//得到 upload 对象
+            upload.render({
+                elem: '#uploadBtn'										//设置监听元素
+                ,url: '/upload'											//设置上传路径
+                ,before: function(obj){ 								//obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    layer.load(); 										//上传loading
+                }
+            	,accept: 'file' 										//上传文件类型
+                ,done: function(res, index, upload){
+                	layer.closeAll('loading'); 							//关闭loading
+                    layer.alert('更新成功: 当前版本【' + res.info + '】');   //弹出框
+                    $("#cversion").html('Current Version V ' + res.info)
+                }
+                ,error: function(index, upload){
+                    layer.closeAll('loading'); 							//关闭loading
+                }
+            });
+	    })
+    </script>
+</body>
+</html>
