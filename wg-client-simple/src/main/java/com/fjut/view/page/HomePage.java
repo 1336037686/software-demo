@@ -147,18 +147,37 @@ public class HomePage extends JFrame {
 			}
 		}
 		
-		//物料管理主页
-		JPanel materialManagerPanel = (JPanel) SpringContextUtils.getBean("MaterialManagerPanel");
-		contentTablePane.addTab("物料管理", new ImageIcon("E:\\DevelopProjects\\Java_Project\\eclipse_project\\software-class\\wg-client-simple\\static\\images\\material.png"), materialManagerPanel, null);
-		
-		//进出仓管理主页 TradingManagerPanel
-		JPanel tradingManagerPanel = (JPanel) SpringContextUtils.getBean("TradingManagerPanel");
-		contentTablePane.addTab("进出仓管理", new ImageIcon("E:\\DevelopProjects\\Java_Project\\eclipse_project\\software-class\\wg-client-simple\\static\\images\\materialsSell.png"), tradingManagerPanel, null);
-		
-		//报表管理主页 TradingManagerPanel
-		JPanel formManagerPanel = (JPanel) SpringContextUtils.getBean("FormManagerPanel");
-		contentTablePane.addTab("报表管理", new ImageIcon("E:\\DevelopProjects\\Java_Project\\eclipse_project\\software-class\\wg-client-simple\\static\\images\\materialsSell.png"), formManagerPanel, null);
-		
+		//获取用户权限,根据权限显示菜单
+		String authoritys = loginUser.getAuthority();
+		if(authoritys != null) {
+			String[] authority = authoritys.split("-");
+			if(authority != null) {
+				for (String a : authority) {
+					if("1".equals(a)) {
+						//物料管理主页
+						JPanel materialManagerPanel = (JPanel) SpringContextUtils.getBean("MaterialManagerPanel");
+						contentTablePane.addTab("物料管理", new ImageIcon("E:\\DevelopProjects\\Java_Project\\eclipse_project\\software-class\\wg-client-simple\\static\\images\\material.png"), materialManagerPanel, null);
+					}
+					if("2".equals(a)) {
+						//进出仓管理主页 TradingManagerPanel
+						JPanel tradingManagerPanel = (JPanel) SpringContextUtils.getBean("TradingManagerPanel");
+						contentTablePane.addTab("进出仓管理", new ImageIcon("E:\\DevelopProjects\\Java_Project\\eclipse_project\\software-class\\wg-client-simple\\static\\images\\materialsSell.png"), tradingManagerPanel, null);
+					}
+					if("3".equals(a)) {
+						//报表管理主页 TradingManagerPanel
+						JPanel formManagerPanel = (JPanel) SpringContextUtils.getBean("FormManagerPanel");
+						contentTablePane.addTab("报表管理", new ImageIcon("E:\\DevelopProjects\\Java_Project\\eclipse_project\\software-class\\wg-client-simple\\static\\images\\materialsSell.png"), formManagerPanel, null);
+					}
+					if("4".equals(a)) {
+						//日志管理页面
+						
+					}
+				}
+			}
+		}
+
+
+
 		
 	}
 }

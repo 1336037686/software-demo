@@ -38,6 +38,7 @@ import com.fjut.util.DataUtil;
 import com.fjut.util.DateUtil;
 import com.fjut.util.SpringContextUtils;
 import com.fjut.view.page.UserAddPage;
+import javax.swing.JCheckBox;
 
 /**
  * 用户管理面板
@@ -60,9 +61,7 @@ public class UserManagerPanel extends JPanel {
 	private JTextField idnumField;
 	private JTextField birthPlaceField;
 	private JTextField addressField;
-	private JTextField textField_7;
 	private JXDatePicker datepick;
-	private JTextField textField_8;
 	private TableComponent table;
 
 	private JRadioButton radioButtonBoy;
@@ -70,6 +69,12 @@ public class UserManagerPanel extends JPanel {
 
 	private JRadioButton radioButtonAdmin;
 	private JRadioButton radioButtonOrdinary;
+	
+	private JCheckBox authorityMaterialCheckBox;
+	private JCheckBox authorityInOutCheckBox ;
+	private JCheckBox authorityChartCheckBox;
+	private JCheckBox authorityLogCheckBox;
+
 
 	// 表格数据
 	private Object[] columnNames = { "序号", "用户代码", "用户姓名", "人员性别", "联系电话", "权限类别" };
@@ -79,6 +84,7 @@ public class UserManagerPanel extends JPanel {
 	 * 疑问： 1. 为什么不能使用依赖注入 2. 为什么需要手动获取才可以
 	 */
 	private UserService userService = SpringContextUtils.getBean(UserService.class);
+	private JTextField textField;
 
 	/**
 	 * Create the panel.
@@ -229,45 +235,66 @@ public class UserManagerPanel extends JPanel {
 		ButtonGroup permissionButtonGroup = new ButtonGroup();
 		permissionButtonGroup.add(radioButtonAdmin);
 		permissionButtonGroup.add(radioButtonOrdinary);
+		
+		JLabel label_8 = new JLabel("权限管理");
+		label_8.setBounds(37, 314, 54, 15);
+		userMsgPanel.add(label_8);
+		
+		authorityMaterialCheckBox = new JCheckBox("物料管理");
+		authorityMaterialCheckBox.setBounds(101, 310, 103, 23);
+		userMsgPanel.add(authorityMaterialCheckBox);
+		
+		authorityInOutCheckBox = new JCheckBox("进出仓管理");
+		authorityInOutCheckBox.setBounds(215, 310, 103, 23);
+		userMsgPanel.add(authorityInOutCheckBox);
+		
+		authorityChartCheckBox = new JCheckBox("报表管理");
+		authorityChartCheckBox.setBounds(101, 347, 103, 23);
+		userMsgPanel.add(authorityChartCheckBox);
+		
+		authorityLogCheckBox = new JCheckBox("日志管理");
+		authorityLogCheckBox.setBounds(215, 347, 103, 23);
+		userMsgPanel.add(authorityLogCheckBox);
 
 		JLabel lblNewLabel = new JLabel("身份证");
-		lblNewLabel.setBounds(37, 314, 54, 15);
+		lblNewLabel.setBounds(37, 392, 54, 15);
 		userMsgPanel.add(lblNewLabel);
 
 		idnumField = new JTextField();
 		idnumField.setColumns(10);
-		idnumField.setBounds(101, 311, 263, 21);
+		idnumField.setBounds(101, 389, 263, 21);
 		userMsgPanel.add(idnumField);
 
 		JLabel label_5 = new JLabel("籍贯");
-		label_5.setBounds(37, 353, 54, 15);
+		label_5.setBounds(37, 431, 54, 15);
 		userMsgPanel.add(label_5);
 
 		birthPlaceField = new JTextField();
 		birthPlaceField.setColumns(10);
-		birthPlaceField.setBounds(101, 350, 263, 21);
+		birthPlaceField.setBounds(101, 428, 263, 21);
 		userMsgPanel.add(birthPlaceField);
 
 		JLabel label_6 = new JLabel("地址");
-		label_6.setBounds(37, 388, 54, 15);
+		label_6.setBounds(37, 466, 54, 15);
 		userMsgPanel.add(label_6);
 
 		addressField = new JTextField();
 		addressField.setColumns(10);
-		addressField.setBounds(101, 385, 263, 21);
+		addressField.setBounds(101, 463, 263, 21);
 		userMsgPanel.add(addressField);
 
 		JLabel label_7 = new JLabel("出生日期");
-		label_7.setBounds(37, 424, 54, 15);
+		label_7.setBounds(37, 502, 54, 15);
 		userMsgPanel.add(label_7);
 
-		datepick = new DateComponent(101, 421, 164, 21).getJXDatePicker();
+		datepick = new DateComponent(101, 500, 164, 21).getJXDatePicker();
 		userMsgPanel.add(datepick);
 
 		JButton button = new JButton("修改");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (JOptionPane.showConfirmDialog(null, "确定修改？") == 0) {
+					//获取数据
 					String id = idFiled.getText();
 					String userId = userIdField.getText();
 					String userName = userNameField.getText();
@@ -277,7 +304,9 @@ public class UserManagerPanel extends JPanel {
 					String birthPlace = birthPlaceField.getText();
 					String address = addressField.getText();
 					String phone = phoneField.getText();
+					String authority = "";
 					
+					//权限
 					int gender = 0;
 					if (radioButtonBoy.isSelected()) {
 						gender = 1;
@@ -286,18 +315,45 @@ public class UserManagerPanel extends JPanel {
 					if (radioButtonAdmin.isSelected()) {
 						permission = 1;
 					}
-					//如果id为空
+					
+					//具体权限
+					if(authorityMaterialCheckBox.isSelected()) {
+						authority += "1-";
+					}
+					
+					if(authorityInOutCheckBox.isSelected()) {
+						authority += "2-";
+					}
+					
+					if(authorityChartCheckBox.isSelected()) {
+						authority += "3-";
+					}
+					
+					if(authorityLogCheckBox.isSelected()) {
+						authority += "4-";
+					}
+					
+					if(authority.endsWith("-")) {
+						authority = authority.trim().substring(0, authority.lastIndexOf("-"));
+					}
+					
+					//id为空
 					if(id == null || "".equals(id.trim())) {
 						JOptionPane.showMessageDialog(null, "请选择一条要修改的信息", "提示", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
+					//密码小于6位或者密码超过12位
+					if((password.trim().length() < 6 || password.trim().length() > 12) && password.trim().length() < 32) {
+						JOptionPane.showMessageDialog(null, "密码长度应在6-12位之间", "提示", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 					//数据检查
-					boolean check = DataUtil.dataCheck(id, userId, userName, password, birthday, identityNum,
-							birthPlace, address, phone);
+					boolean check = DataUtil.dataCheck(id, userId, userName, password, birthday, identityNum,birthPlace, address, phone);
 					if (!check) {
 						JOptionPane.showMessageDialog(null, "填写错误，请重新填写", "提示", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
+					
 					//封装数据，更新数据
 					User user = new User();
 					user.setId(id);
@@ -312,6 +368,7 @@ public class UserManagerPanel extends JPanel {
 					user.setPermission(permission);
 					user.setPhone(phone);
 					user.setAge(DateUtil.getAgeByBirth(birthday));
+					user.setAuthority(authority);
 					boolean result = userService.updateUser(user);
 					if (result) {
 						JOptionPane.showMessageDialog(null, "修改成功", "提示", JOptionPane.INFORMATION_MESSAGE);
@@ -378,6 +435,7 @@ public class UserManagerPanel extends JPanel {
 						birthPlaceField.setText(selectedUser.getBirthPlace());
 						addressField.setText(selectedUser.getAddress());
 						datepick.setDate(selectedUser.getBirthday());
+						//封装身份
 						if (selectedUser.getUserGender() == 1) {
 							radioButtonBoy.setSelected(true);
 						} else {
@@ -388,9 +446,49 @@ public class UserManagerPanel extends JPanel {
 						} else {
 							radioButtonOrdinary.setSelected(true);
 						}
+						//封装具体权限
+						String[] authoritys = selectedUser.getAuthority().trim().split("-");
+						for (String authority : authoritys) {
+							if("1".equals(authority)) {
+								authorityMaterialCheckBox.setSelected(true);
+							}
+							if("2".equals(authority)) {
+								authorityInOutCheckBox.setSelected(true);
+							}
+							if("3".equals(authority)) {
+								authorityChartCheckBox.setSelected(true);
+							}
+							if("4".equals(authority)) {
+								authorityLogCheckBox.setSelected(true);
+							}
+						}
 					}
 				}
 			}
+		});
+		
+		//添加权限按钮事件监听
+		//点击管理员自动添加所有权限，并设置不可选择
+		radioButtonAdmin.addItemListener((e) -> {
+			authorityMaterialCheckBox.setSelected(true);
+			authorityInOutCheckBox.setSelected(true);
+			authorityChartCheckBox.setSelected(true);
+			authorityLogCheckBox.setSelected(true);
+			authorityMaterialCheckBox.setEnabled(false);
+			authorityInOutCheckBox.setEnabled(false);
+			authorityChartCheckBox.setEnabled(false);
+			authorityLogCheckBox.setEnabled(false);
+		});
+		//点击普通用户自动取消所有权限，并设置可选择
+		radioButtonOrdinary.addItemListener((e) -> {
+			authorityMaterialCheckBox.setSelected(false);
+			authorityInOutCheckBox.setSelected(false);
+			authorityChartCheckBox.setSelected(false);
+			authorityLogCheckBox.setSelected(false);
+			authorityMaterialCheckBox.setEnabled(true);
+			authorityInOutCheckBox.setEnabled(true);
+			authorityChartCheckBox.setEnabled(true);
+			authorityLogCheckBox.setEnabled(true);
 		});
 
 		// 刷新
@@ -436,5 +534,9 @@ public class UserManagerPanel extends JPanel {
 		datepick.setDate(new Date());
 		radioButtonOrdinary.setSelected(true);
 		radioButtonBoy.setSelected(true);
+		authorityMaterialCheckBox.setSelected(false);
+		authorityInOutCheckBox.setSelected(false);
+		authorityChartCheckBox.setSelected(false);
+		authorityLogCheckBox.setSelected(false);
 	}
 }

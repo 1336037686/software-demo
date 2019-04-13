@@ -32,6 +32,7 @@ import com.fjut.util.DataUtil;
 import com.fjut.util.DateUtil;
 import com.fjut.util.MD5Util;
 import com.fjut.view.component.DateComponent;
+import javax.swing.JCheckBox;
 
 /**
  * 用户添加页面
@@ -56,7 +57,7 @@ public class UserAddPage extends JDialog {
     private JTextField birthPlaceField;
     private JTextField addressField;
     private JTextField phoneField;
-
+    
 	/**
 	 * Create the dialog.
 	 */
@@ -65,7 +66,7 @@ public class UserAddPage extends JDialog {
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		//设置窗口大小
-		setBounds(100, 100, 573, 404);
+		setBounds(100, 100, 573, 421);
 		//设置居中显示
 		setLocationRelativeTo(null);
 		//设置不可编辑
@@ -119,19 +120,19 @@ public class UserAddPage extends JDialog {
 		contentPane.add(label_4);
 		
 		JLabel label_5 = new JLabel("身 份 证");
-		label_5.setBounds(71, 187, 80, 15);
+		label_5.setBounds(71, 223, 80, 15);
 		contentPane.add(label_5);
 		
 		JLabel label_6 = new JLabel("籍   贯");
-		label_6.setBounds(281, 187, 80, 15);
+		label_6.setBounds(281, 223, 80, 15);
 		contentPane.add(label_6);
 		
 		JLabel label_7 = new JLabel("家庭住址");
-		label_7.setBounds(71, 228, 80, 15);
+		label_7.setBounds(71, 264, 80, 15);
 		contentPane.add(label_7);
 		
 		JLabel label_9 = new JLabel("联系电话");
-		label_9.setBounds(71, 263, 80, 15);
+		label_9.setBounds(71, 299, 80, 15);
 		contentPane.add(label_9);
 		
 		JLabel label_8 = new JLabel("密    码");
@@ -151,6 +152,26 @@ public class UserAddPage extends JDialog {
 		radioButtonOrdinary.setBounds(413, 143, 89, 23);
 		contentPane.add(radioButtonOrdinary);
 		
+		JLabel label_11 = new JLabel("具体权限");
+		label_11.setBounds(71, 185, 80, 15);
+		contentPane.add(label_11);
+		
+		JCheckBox authorityMaterialCheckBox = new JCheckBox("物料管理");
+		authorityMaterialCheckBox.setBounds(129, 181, 80, 23);
+		contentPane.add(authorityMaterialCheckBox);
+		
+		JCheckBox authorityInOutCheckBox = new JCheckBox("进出仓管理");
+		authorityInOutCheckBox.setBounds(210, 181, 104, 23);
+		contentPane.add(authorityInOutCheckBox);
+		
+		JCheckBox authorityChartCheckBox = new JCheckBox("报表管理");
+		authorityChartCheckBox.setBounds(316, 181, 80, 23);
+		contentPane.add(authorityChartCheckBox);
+		
+		JCheckBox authorityLogCheckBox = new JCheckBox("日志管理");
+		authorityLogCheckBox.setBounds(410, 181, 80, 23);
+		contentPane.add(authorityLogCheckBox);
+		
 		ButtonGroup buttonGroup2 = new ButtonGroup();
 		buttonGroup2.add(radioButtonAdmin);
 		buttonGroup2.add(radioButtonOrdinary);
@@ -169,22 +190,22 @@ public class UserAddPage extends JDialog {
 		
 		identityNumField = new JTextField();
 		identityNumField.setColumns(10);
-		identityNumField.setBounds(132, 184, 131, 21);
+		identityNumField.setBounds(132, 220, 131, 21);
 		contentPane.add(identityNumField);
 		
 		birthPlaceField = new JTextField();
 		birthPlaceField.setColumns(10);
-		birthPlaceField.setBounds(340, 184, 150, 21);
+		birthPlaceField.setBounds(340, 220, 150, 21);
 		contentPane.add(birthPlaceField);
 		
 		addressField = new JTextField();
 		addressField.setColumns(10);
-		addressField.setBounds(132, 225, 358, 21);
+		addressField.setBounds(132, 261, 358, 21);
 		contentPane.add(addressField);
 		
 		phoneField = new JTextField();
 		phoneField.setColumns(10);
-		phoneField.setBounds(132, 260, 131, 21);
+		phoneField.setBounds(132, 296, 131, 21);
 		contentPane.add(phoneField);
 		
 		JButton btnSubmit = new JButton("提交");
@@ -203,12 +224,40 @@ public class UserAddPage extends JDialog {
 				String birthPlace = birthPlaceField.getText();
 				String address = addressField.getText();
 				String phone = phoneField.getText();
+				String authority = "";
 				
 				//数据检查
 				boolean dataCheckStatus = dataCheck(userId, userName, password, birthday, identityNum, birthPlace, address, phone);
 				if(!dataCheckStatus) {
 					JOptionPane.showMessageDialog(null, "填写错误，请重新填写", "提示", JOptionPane.ERROR_MESSAGE);
 					return;
+				}
+				
+				//密码长度应在6-12位之间
+				if((password.trim().length() < 6 || password.trim().length() > 12) && password.trim().length() < 32) {
+					JOptionPane.showMessageDialog(null, "密码长度应在6-12位之间", "提示", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
+				//具体权限
+				if(authorityMaterialCheckBox.isSelected()) {
+					authority += "1-";
+				}
+				
+				if(authorityInOutCheckBox.isSelected()) {
+					authority += "2-";
+				}
+				
+				if(authorityChartCheckBox.isSelected()) {
+					authority += "3-";
+				}
+				
+				if(authorityLogCheckBox.isSelected()) {
+					authority += "4-";
+				}
+				
+				if(authority.endsWith("-")) {
+					authority = authority.trim().substring(0, authority.lastIndexOf("-"));
 				}
 				
 				//封装数据
@@ -233,6 +282,7 @@ public class UserAddPage extends JDialog {
 				user.setBirthPlace(birthPlace);
 				user.setAge(DateUtil.getAgeByBirth(birthday));
 				user.setRegisterDay(new Date());
+				user.setAuthority(authority);
 				
 				//注册
 				boolean register = userService.register(user);
@@ -242,11 +292,36 @@ public class UserAddPage extends JDialog {
 				}
 			}
 		});
-		btnSubmit.setBounds(71, 311, 93, 23);
+		
+		//添加权限按钮事件监听
+		//点击管理员自动添加所有权限，并设置不可选择
+		radioButtonAdmin.addItemListener((e) -> {
+			authorityMaterialCheckBox.setSelected(true);
+			authorityInOutCheckBox.setSelected(true);
+			authorityChartCheckBox.setSelected(true);
+			authorityLogCheckBox.setSelected(true);
+			authorityMaterialCheckBox.setEnabled(false);
+			authorityInOutCheckBox.setEnabled(false);
+			authorityChartCheckBox.setEnabled(false);
+			authorityLogCheckBox.setEnabled(false);
+		});
+		//点击普通用户自动取消所有权限，并设置可选择
+		radioButtonOrdinary.addItemListener((e) -> {
+			authorityMaterialCheckBox.setSelected(false);
+			authorityInOutCheckBox.setSelected(false);
+			authorityChartCheckBox.setSelected(false);
+			authorityLogCheckBox.setSelected(false);
+			authorityMaterialCheckBox.setEnabled(true);
+			authorityInOutCheckBox.setEnabled(true);
+			authorityChartCheckBox.setEnabled(true);
+			authorityLogCheckBox.setEnabled(true);
+		});
+		
+		btnSubmit.setBounds(71, 337, 93, 23);
 		contentPane.add(btnSubmit);
 		
 		JButton btnReset = new JButton("取消");
-		btnReset.setBounds(397, 311, 93, 23);
+		btnReset.setBounds(397, 337, 93, 23);
 		contentPane.add(btnReset);
 	}
 	

@@ -217,6 +217,7 @@ public class UserUpdatePage extends JDialog {
 					user.setAge(DateUtil.getAgeByBirth(birthday));
 					User loginUser = (User) Session.getSession().get("user");
 					user.setPermission(loginUser.getPermission());
+					user.setAuthority(loginUser.getAuthority());
 					
 					//注册
 					boolean result = userService.updateUser(user);

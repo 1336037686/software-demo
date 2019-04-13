@@ -49,8 +49,11 @@ public class MD5Util {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(md5("666666"));
+//		System.out.println(md5("666666").length());
 		//f379eaf3c831b04de153469d1bec345e
+		String authority = "1-2-3-";
+		authority = authority.substring(0, authority.lastIndexOf("-"));
+		System.out.println(authority);
 		
 	}
 }

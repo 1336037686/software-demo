@@ -12,7 +12,6 @@ import lombok.Setter;
  */
 @Getter@Setter
 public class User {
-	
 	/**
 	 * 人员id
 	 */
@@ -77,12 +76,17 @@ public class User {
 	 * 注册日期
 	 */
 	private Date registerDay;
+	
+	/**
+	 * 具体权限 1：物料管理，2：进出仓管理，3：报表管理，4：日志管理
+	 */
+	private String authority;
 
 	public User() {}
 
 	public User(String id, String userId, String password, String userName, Integer userGender, Date birthday,
 			String identityNum, String birthPlace, String address, String phone, int permission, Integer age,
-			Date registerDate) {
+			Date registerDay, String authority) {
 		this.id = id;
 		this.userId = userId;
 		this.password = password;
@@ -95,7 +99,8 @@ public class User {
 		this.phone = phone;
 		this.permission = permission;
 		this.age = age;
-		this.registerDay = registerDate;
+		this.registerDay = registerDay;
+		this.authority = authority;
 	}
 
 	@Override
@@ -103,11 +108,6 @@ public class User {
 		return "User [id=" + id + ", userId=" + userId + ", password=" + password + ", userName=" + userName
 				+ ", userGender=" + userGender + ", birthday=" + birthday + ", identityNum=" + identityNum
 				+ ", birthPlace=" + birthPlace + ", address=" + address + ", phone=" + phone + ", permission="
-				+ permission + ", age=" + age + ", registerDate=" + registerDay + "]";
-	}
-
-
-
-
-	
+				+ permission + ", age=" + age + ", registerDay=" + registerDay + ", authority=" + authority + "]";
+	}	
 }

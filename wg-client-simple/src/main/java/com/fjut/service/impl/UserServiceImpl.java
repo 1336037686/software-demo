@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService{
 	public Object[][] getSearchUser(String input) {
 		List<User> userList = userMapper.getSearchUser(input);
 		if(userList != null && userList.size() >= 0) {			
-			Object[][] userMSG = new Object[userList.size()][6];
+			Object[][] userMSG = new Object[userList.size()][7];
 			for (int i = 0; i < userList.size(); i++) {
 				userMSG[i][0] = i + 1;
 				userMSG[i][1] = userList.get(i).getUserId();
@@ -116,6 +116,7 @@ public class UserServiceImpl implements UserService{
 				userMSG[i][3] = userList.get(i).getUserGender() == 1 ? "男" : "女";
 				userMSG[i][4] = userList.get(i).getPhone();
 				userMSG[i][5] = userList.get(i).getPermission() == 1 ? "管理员" : "普通员工";
+				userMSG[i][6] = userList.get(i).getAuthority();
 			}
 			return userMSG;
 		}
@@ -127,7 +128,9 @@ public class UserServiceImpl implements UserService{
 	 */
 	@Override
 	public boolean updateUser(User user) {
-		user.setPassword(MD5Util.md5(user.getPassword()));
+		if(user.getPassword().length() != 32) {
+			user.setPassword(MD5Util.md5(user.getPassword()));
+		}
 		int result = userMapper.updateUser(user);
 		if(result > 0) return true;
 		return false;

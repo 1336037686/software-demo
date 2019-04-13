@@ -44,7 +44,6 @@ public class UpdateUtil {
 			return JSON.parseObject(result.toString(), Version.class);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "获取更新失败", "提示", JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
 		}
 	    return null;
 	}

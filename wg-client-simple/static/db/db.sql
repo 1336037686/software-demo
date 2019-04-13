@@ -16,6 +16,7 @@ CREATE TABLE user (
 	address NVARCHAR(200),					/*地址*/
 	phone NVARCHAR(200),					/*电话*/
 	permission INT DEFAULT 0,  				/*权限 管理员1，普通员工0*/
+	authority NVARCHAR(200),   				/*具体权限 1：物料管理，2：进出仓管理，3：报表管理，4：日志管理。 保存格式1-2-3-4*/
 	PRIMARY KEY(id)
 );
 
