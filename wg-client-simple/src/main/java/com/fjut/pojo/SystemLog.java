@@ -1,6 +1,9 @@
 package com.fjut.pojo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.fjut.util.DateUtil;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +26,11 @@ public class SystemLog {
 	private Date date;
 	
 	/**
+	 * 主机名  + IP地址
+	 */
+	private String userLocalHost;
+	
+	/**
 	 * 操作人员
 	 */
 	private String userId;
@@ -34,15 +42,20 @@ public class SystemLog {
 
 	public SystemLog() {}
 
-	public SystemLog(int id, Date date, String userId, String handle) {
+	public SystemLog(int id, Date date, String userLocalHost, String userId, String handle) {
 		this.id = id;
 		this.date = date;
+		this.userLocalHost = userLocalHost;
 		this.userId = userId;
 		this.handle = handle;
 	}
 
 	@Override
 	public String toString() {
-		return "SystemLog [id=" + id + ", date=" + date + ", userId=" + userId + ", handle=" + handle + "]";
+		return  "★ 【日志】: " + id + "\n" + 
+				"> 操作时间: " + DateUtil.dateFormate2(date) + "\n" + 
+				"> 用户主机: " + userLocalHost + "\n" + 
+				"> 操作用户ID: " + userId + "\n" + 
+				"> 具体操作: " + handle + "\n";
 	}
 }

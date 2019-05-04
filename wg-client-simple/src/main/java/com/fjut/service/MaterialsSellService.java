@@ -2,12 +2,9 @@ package com.fjut.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.fjut.pojo.MaterialsSell;
 import com.fjut.pojo.MaterialsSellDetail;
 import com.fjut.pojo.vo.ChartVo;
-import com.fjut.pojo.vo.InOutDataVo;
 
 /**
  * 进出仓服务类

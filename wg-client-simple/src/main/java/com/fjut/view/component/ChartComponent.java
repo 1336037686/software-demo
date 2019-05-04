@@ -3,9 +3,7 @@ package com.fjut.view.component;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -39,6 +37,7 @@ import com.fjut.util.SpringContextUtils;
  * @author LGX
  *
  */
+@SuppressWarnings("all")
 public class ChartComponent {
 	
 	/**
@@ -49,8 +48,10 @@ public class ChartComponent {
 		List<List<ChartVo>> chartData = materialsSellService.getChartData(materialsId, year, month1, month2);
 		List<ChartVo> inList = chartData.get(0);
 		List<ChartVo> outList = chartData.get(1);
-        // 进仓统计
+        
+		// 进仓统计
         TimeSeries timeSeries1 = new TimeSeries("进仓", Month.class);
+        
         // 添加数据
         if(inList != null) {
         	for (ChartVo chartVo : inList) {
@@ -71,10 +72,12 @@ public class ChartComponent {
         TimeSeriesCollection lineDataset = new TimeSeriesCollection();
         lineDataset.addSeries(timeSeries1);
         lineDataset.addSeries(timeSeries2);
-
+        
         JFreeChart chart = ChartFactory.createTimeSeriesChart("Time line graph", "Month", "Sum", lineDataset, true, true, true);
+        
         //设置主标题
         chart.setTitle(new TextTitle("进出仓总量统计对比图"));
+        
         //设置子标题
         TextTitle subtitle = new TextTitle(year + "年度", new Font("宋体", Font.BOLD, 12));
         chart.addSubtitle(subtitle);

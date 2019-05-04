@@ -46,6 +46,11 @@ public class DateUtil {
 		return sim.format(date);
 	}
 	
+	public static String dateFormate2(Date date) {
+		SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return sim.format(date);
+	}
+	
 	public static void main(String[] args) throws Exception {
 //		SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
 //		Date date = sim.parse("1997-11-16");

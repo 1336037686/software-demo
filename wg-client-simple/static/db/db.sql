@@ -53,5 +53,15 @@ CREATE TABLE materialsSellDetail (
 	PRIMARY KEY(id)
 );
 
+/*系统日志类*/
+CREATE TABLE systemLog (
+	id INT AUTO_INCREMENT,								/*id*/
+	date DATETIME NOT NULL,								/*操作日期*/
+	userLocalHost NVARCHAR(200) NOT NULL,				/*IP地址*/
+	userId NVARCHAR(200) NOT NULL,						/*操作人员*/
+	handle NVARCHAR(500),								/*具体操作*/
+	PRIMARY KEY(id)
+);
+
 SELECT * FROM materialsSellDetail
 SELECT * FROM materialsSell

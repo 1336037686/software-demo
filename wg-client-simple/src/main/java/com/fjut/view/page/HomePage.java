@@ -170,14 +170,14 @@ public class HomePage extends JFrame {
 					}
 					if("4".equals(a)) {
 						//日志管理页面
-						
+						JPanel logManagerPanel = (JPanel) SpringContextUtils.getBean("LogManagerPanel");
+						contentTablePane.addTab("日志管理", new ImageIcon("E:\\DevelopProjects\\Java_Project\\eclipse_project\\software-class\\wg-client-simple\\static\\images\\materialsSell.png"), logManagerPanel, null);
 					}
+					
 				}
 			}
-		}
-
-
-
-		
+		}	
+		JPanel interestManagerPanel = (JPanel) SpringContextUtils.getBean("InterestManagerPanel");
+		contentTablePane.addTab("兴趣管理", new ImageIcon("E:\\DevelopProjects\\Java_Project\\eclipse_project\\software-class\\wg-client-simple\\static\\images\\materialsSell.png"), interestManagerPanel, null);		
 	}
 }

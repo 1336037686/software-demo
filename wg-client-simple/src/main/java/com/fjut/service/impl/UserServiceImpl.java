@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fjut.aop.annotation.SystemLogUserAspect;
+import com.fjut.aop.constant.UserConst;
 import com.fjut.dao.mapper.UserMapper;
 import com.fjut.pojo.Session;
 import com.fjut.pojo.User;
@@ -27,7 +29,7 @@ public class UserServiceImpl implements UserService{
 	/**
 	 * 用户登录
 	 */
-	@Override
+	@SystemLogUserAspect(UserConst.USERLOGIN)
 	public boolean login(User user) {
 		User existUser = userMapper.getUserByIdAndPermission(user.getUserId(), user.getPermission());
 		if(existUser == null) return false;
@@ -41,7 +43,7 @@ public class UserServiceImpl implements UserService{
 	/**
 	 * 用户注册
 	 */
-	@Override
+	@SystemLogUserAspect(UserConst.USERREGISTER)
 	public boolean register(User user) {
 		String userId = user.getUserId();
 		User findUser = userMapper.getUserByUserId(userId);
@@ -64,7 +66,6 @@ public class UserServiceImpl implements UserService{
 	/**
 	 * 查找所有用户并返回相应信息
 	 */
-	@Override
 	public Object[][] getAllUser() {
 		List<User> userList = userMapper.getAllUser();
 		if(userList != null) {			
@@ -85,7 +86,6 @@ public class UserServiceImpl implements UserService{
 	/**
 	 * 根据userId获取用户
 	 */
-	@Override
 	public User getUserByUserId(String userId) {
 		return userMapper.getUserByUserId(userId);
 	}
@@ -94,7 +94,6 @@ public class UserServiceImpl implements UserService{
 	 * 退出登陆
 	 * 删除session跳转页面
 	 */
-	@Override
 	public boolean logOut() {
 		Object remove = Session.getSession().remove("user");
 		if(remove != null) return true;
@@ -104,7 +103,6 @@ public class UserServiceImpl implements UserService{
 	/**
 	 * 查找用户
 	 */
-	@Override
 	public Object[][] getSearchUser(String input) {
 		List<User> userList = userMapper.getSearchUser(input);
 		if(userList != null && userList.size() >= 0) {			
@@ -126,7 +124,7 @@ public class UserServiceImpl implements UserService{
 	/**
 	 * 更新用户
 	 */
-	@Override
+	@SystemLogUserAspect(UserConst.USERUPDATE)
 	public boolean updateUser(User user) {
 		if(user.getPassword().length() != 32) {
 			user.setPassword(MD5Util.md5(user.getPassword()));
@@ -139,7 +137,7 @@ public class UserServiceImpl implements UserService{
 	/**
 	 * 根据id删除用户
 	 */
-	@Override
+	@SystemLogUserAspect(UserConst.USERDELETE)
 	public boolean deleteUser(String id, String userId) {
 		int result = userMapper.deleteUserById(id, userId);
 		if(result == 1) return true;

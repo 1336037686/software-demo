@@ -2,9 +2,6 @@ package com.fjut.pojo.vo;
 
 import java.util.Date;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * 报表视图实体
  * @author LGX

@@ -1,14 +1,18 @@
 package com.fjut.util;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+/**
+ * Excel xlsx表格操作工具类
+ * @author LGX
+ *
+ */
+@SuppressWarnings("all")
 public class POIUtil {
 	
 	/**
