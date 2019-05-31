@@ -90,6 +90,7 @@ public class MaterialInPage extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
+		//获取MD5随机ID值
 		String md5Id = MD5Util.getMD5();
 		materialsList = materialsService.getAllMaterialList();
 		List<User> userList = userService.getAllUserList();
@@ -151,16 +152,19 @@ public class MaterialInPage extends JDialog {
 		inOutListJScrollPane.setBounds(10, 66, 650, 347);
 
 		JButton button = new JButton("添加");
-		List<JPanel> detailPanelList = new ArrayList<>();																 //详情列表
+		List<JPanel> detailPanelList = new ArrayList<>();
+		//添加订单详情物品
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				inOutListJScrollPane.setViewportView(inOutListPanel);
 				inOutListPanel.setPreferredSize(new Dimension(647, 15 + 45 * detailNum));
+				//显示订单详情页面
 				JPanel detailPanel = new MaterialInDetailPanel(10, 15 + 45 * detailNum, detailNum, md5Id, materialsList);
 				detailPanel.setVisible(true);
 				inOutListPanel.add(detailPanel);
 				inOutListPanel.repaint();
 				detailPanelList.add(detailPanel);
+				//数量+1
 				detailNum++;
 			}
 		});
@@ -168,12 +172,14 @@ public class MaterialInPage extends JDialog {
 		button.setBounds(358, 546, 93, 23);
 		
 		JButton button_1 = new JButton("删除");
+		//删除已添加物品
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(detailPanelList.size() > 0) {					
 					JPanel panel = detailPanelList.get(detailPanelList.size() - 1);
 					inOutListPanel.remove(panel);
 					detailPanelList.remove(panel);
+					//点击删除数量-1
 					detailNum--;
 					inOutListPanel.setPreferredSize(new Dimension(647, 15 + 45 * detailNum));
 					inOutListPanel.repaint();
@@ -191,6 +197,7 @@ public class MaterialInPage extends JDialog {
 		contentPanel.add(datepick);
 		
 		JButton submitBtn = new JButton("提交");
+		//提交进仓订单
 		submitBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MaterialInDetailPanel.selectMaterial.clear(); //清空选择的所有详情商品

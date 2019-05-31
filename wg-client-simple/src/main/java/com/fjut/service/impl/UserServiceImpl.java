@@ -15,6 +15,7 @@ import com.fjut.pojo.User;
 import com.fjut.service.UserService;
 import com.fjut.util.MD5Util;
 
+
 /**
  * User服务实现类
  * @author LGX
@@ -31,9 +32,12 @@ public class UserServiceImpl implements UserService{
 	 */
 	@SystemLogUserAspect(UserConst.USERLOGIN)
 	public boolean login(User user) {
+		//通过id和权限查找用户
 		User existUser = userMapper.getUserByIdAndPermission(user.getUserId(), user.getPermission());
 		if(existUser == null) return false;
+		//比对密码
 		if(MD5Util.md5(user.getPassword()).equals(existUser.getPassword())) {
+			//保存用户信息到session
 			Session.getSession().put("user", existUser);
 			return true;
 		}
@@ -46,12 +50,15 @@ public class UserServiceImpl implements UserService{
 	@SystemLogUserAspect(UserConst.USERREGISTER)
 	public boolean register(User user) {
 		String userId = user.getUserId();
+		//判断当前用户是否存在
 		User findUser = userMapper.getUserByUserId(userId);
 		if(findUser != null) {
 			JOptionPane.showMessageDialog(null, "这个用户代码已经存在", "Message", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
+		//对密码进行MD5加密存储
 		user.setPassword(MD5Util.md5(user.getPassword()));
+		//保存用户信息
 		int result = userMapper.addUser(user);
 		if(result == 1) {
 			JOptionPane.showMessageDialog(null, "添加成功", "Message", JOptionPane.INFORMATION_MESSAGE);
@@ -67,7 +74,9 @@ public class UserServiceImpl implements UserService{
 	 * 查找所有用户并返回相应信息
 	 */
 	public Object[][] getAllUser() {
+		//获取所有用户信息
 		List<User> userList = userMapper.getAllUser();
+		//封装用户信息到二维数组
 		if(userList != null) {			
 			Object[][] userMSG = new Object[userList.size()][6];
 			for (int i = 0; i < userList.size(); i++) {
@@ -95,6 +104,7 @@ public class UserServiceImpl implements UserService{
 	 * 删除session跳转页面
 	 */
 	public boolean logOut() {
+		//退出登录，删除session中用户信息
 		Object remove = Session.getSession().remove("user");
 		if(remove != null) return true;
 		return false;
@@ -104,7 +114,9 @@ public class UserServiceImpl implements UserService{
 	 * 查找用户
 	 */
 	public Object[][] getSearchUser(String input) {
+		//根据关键字查找用户列表
 		List<User> userList = userMapper.getSearchUser(input);
+		//封装用户数据
 		if(userList != null && userList.size() >= 0) {			
 			Object[][] userMSG = new Object[userList.size()][7];
 			for (int i = 0; i < userList.size(); i++) {
@@ -126,6 +138,7 @@ public class UserServiceImpl implements UserService{
 	 */
 	@SystemLogUserAspect(UserConst.USERUPDATE)
 	public boolean updateUser(User user) {
+		//更新用户，判断用户密码是否属于已经加密过的，若不是32未加密则使用MD5加密
 		if(user.getPassword().length() != 32) {
 			user.setPassword(MD5Util.md5(user.getPassword()));
 		}

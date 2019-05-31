@@ -41,11 +41,21 @@ public class DateUtil {
 	}
 	
 	
+	/**
+	 * 日期格式化
+	 * @param date
+	 * @return
+	 */
 	public static String dateFormate(Date date) {
 		SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
 		return sim.format(date);
 	}
 	
+	/**
+	 * 日期格式化
+	 * @param date
+	 * @return
+	 */
 	public static String dateFormate2(Date date) {
 		SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return sim.format(date);

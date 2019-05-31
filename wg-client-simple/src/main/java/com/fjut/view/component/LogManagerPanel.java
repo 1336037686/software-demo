@@ -46,6 +46,7 @@ public class LogManagerPanel extends JPanel {
 		JButton btnNewButton = new JButton("日志刷新");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//重新加载日志
 				initData();
 			}
 		});
@@ -71,10 +72,12 @@ public class LogManagerPanel extends JPanel {
 	
 	
 	void initData() {
+		//查询所有日志
 		List<SystemLog> list = systemLogService.selectLog();
 		StringBuffer sb = new StringBuffer();
 		if(list != null) {			
 			for (SystemLog systemLog : list) {
+				//拼接日志
 				sb.append(systemLog + "\n");
 			}
 		}

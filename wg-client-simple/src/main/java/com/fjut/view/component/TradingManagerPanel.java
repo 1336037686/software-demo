@@ -1,34 +1,28 @@
 package com.fjut.view.component;
 
-import javax.swing.JPanel;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import com.fjut.pojo.User;
-import com.fjut.service.MaterialsSellDetailService;
-import com.fjut.service.MaterialsSellService;
-import com.fjut.util.DataUtil;
-import com.fjut.util.SpringContextUtils;
-import com.fjut.view.page.MaterialsSellUpdatePage;
-import com.fjut.view.page.RemarksPage;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 
-import java.awt.event.ActionListener;
-import java.awt.BorderLayout;
-import java.awt.HeadlessException;
-import java.awt.event.ActionEvent;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import com.fjut.service.MaterialsSellDetailService;
+import com.fjut.service.MaterialsSellService;
+import com.fjut.util.DataUtil;
+import com.fjut.util.SpringContextUtils;
+import com.fjut.view.page.RemarksPage;
 
 /**
  * 进出仓管理面板
@@ -68,7 +62,9 @@ public class TradingManagerPanel extends JPanel {
 		JButton materialInBtn = new JButton("进仓");
 		materialInBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//实例化MaterialInPage面板
 				JDialog materialInPage = (JDialog) SpringContextUtils.getBean("MaterialInPage");
+				//设置该面板显示
 				materialInPage.setVisible(true);
 			}
 		});
@@ -78,8 +74,9 @@ public class TradingManagerPanel extends JPanel {
 		JButton materialOutBtn = new JButton("出仓");
 		materialOutBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("ok");
+				//点击出仓按钮事，实例化MaterialOutPage面板
 				JDialog materialOutPage = (JDialog) SpringContextUtils.getBean("MaterialOutPage");
+				//设置该面板显示
 				materialOutPage.setVisible(true);
 			}
 		});
@@ -148,6 +145,7 @@ public class TradingManagerPanel extends JPanel {
 		remarksBtn.setBounds(214, 584, 93, 23);
 		materialShellInfoPanel.add(remarksBtn);
 		remarksBtn.addActionListener((e) -> {
+			//如果没有选择一条记录
 			if(selectTarget == null) {
 				JOptionPane.showMessageDialog(null, "请选择需要查看的记录", "提示", JOptionPane.ERROR_MESSAGE);
 				return;

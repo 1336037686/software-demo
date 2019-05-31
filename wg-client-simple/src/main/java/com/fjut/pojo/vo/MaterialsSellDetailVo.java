@@ -15,17 +15,12 @@ public class MaterialsSellDetailVo {
 	private int total;
 	
 	public MaterialsSellDetailVo() {
-		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public MaterialsSellDetailVo(int id, String materialsName, int total) {
-		super();
 		this.id = id;
 		this.materialsName = materialsName;
 		this.total = total;
 	}
-
-	
-	
 }

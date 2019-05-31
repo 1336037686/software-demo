@@ -44,27 +44,28 @@ public class ChartComponent {
 	 * 创建JFreeChart
 	 */
 	public static JFreeChart createChart(String materialsId, String year, int month1, int month2) {
+		//实例化MaterialsSellService对象
 		MaterialsSellService materialsSellService = SpringContextUtils.getBean(MaterialsSellService.class);
+		//根据物料id，年份，月份区间获取报表数据
 		List<List<ChartVo>> chartData = materialsSellService.getChartData(materialsId, year, month1, month2);
+		//获取进仓数据
 		List<ChartVo> inList = chartData.get(0);
+		//获取出仓数据
 		List<ChartVo> outList = chartData.get(1);
-        
 		// 进仓统计
         TimeSeries timeSeries1 = new TimeSeries("进仓", Month.class);
-        
         // 添加数据
         if(inList != null) {
         	for (ChartVo chartVo : inList) {
-        		timeSeries1.add(new Month(chartVo.getDate().getMonth() + 1, chartVo.getDate().getYear() + 1900), chartVo.getSum());
-			}
+        		timeSeries1.add(new Month(chartVo.getMonth(), chartVo.getYear()), chartVo.getSum());
+        	}
         }
-
         // 出仓统计
         TimeSeries timeSeries2 = new TimeSeries("出仓", Month.class);
         // 添加数据
-        if(inList != null) {
+        if(outList != null) {
         	for (ChartVo chartVo : outList) {
-        		timeSeries2.add(new Month(chartVo.getDate().getMonth() + 1, chartVo.getDate().getYear() + 1900), chartVo.getSum());
+        		timeSeries2.add(new Month(chartVo.getMonth(), chartVo.getYear()), chartVo.getSum());
 			}
         }
 
@@ -72,16 +73,12 @@ public class ChartComponent {
         TimeSeriesCollection lineDataset = new TimeSeriesCollection();
         lineDataset.addSeries(timeSeries1);
         lineDataset.addSeries(timeSeries2);
-        
         JFreeChart chart = ChartFactory.createTimeSeriesChart("Time line graph", "Month", "Sum", lineDataset, true, true, true);
-        
         //设置主标题
         chart.setTitle(new TextTitle("进出仓总量统计对比图"));
-        
         //设置子标题
         TextTitle subtitle = new TextTitle(year + "年度", new Font("宋体", Font.BOLD, 12));
         chart.addSubtitle(subtitle);
-
         chart.setAntiAlias(true);
 
         //设置时间轴的范围。
@@ -133,6 +130,7 @@ public class ChartComponent {
 		try {
 			FileOutputStream fos = new FileOutputStream(target);
 			JFreeChart chart = createChart(materialsId, year, month1, month2);
+			//保存为图片 大小 1100 * 800
 			ChartUtilities.saveChartAsPNG(target, chart, 1100, 800);
 			fos.flush();
 			fos.close();

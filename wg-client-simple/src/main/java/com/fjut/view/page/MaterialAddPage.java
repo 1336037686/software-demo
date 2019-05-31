@@ -50,11 +50,9 @@ public class MaterialAddPage extends JDialog {
 	
 	private MaterialsService materialsService = SpringContextUtils.getBean(MaterialsService.class);
 	
+	//物料单位列表
 	private String[] materialUnits = {"件", "套", "公斤", "吨", "升", "米", "毫米", "个"};
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		try {
 			MaterialAddPage dialog = new MaterialAddPage();
@@ -131,20 +129,22 @@ public class MaterialAddPage extends JDialog {
 		contentPanel.add(scrollPane);
 		
 		JButton addBtn = new JButton("添加");
+		//监听点击事件，添加物料
 		addBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//获取相应数据
 				String materialId = materialIdField.getText();
 				String materialRemarks = materialRemarksFiled.getText();
 				String materialModel = materialModelField.getText();
 				String materialName = materialNameField.getText();
 				String materialUnit = (String) materialUnitField.getSelectedItem();
-				
+				//数据校验
 				boolean dataCheck = DataUtil.dataCheck(materialId, materialName, materialUnit, materialModel);
 				if(!dataCheck) {
 					JOptionPane.showMessageDialog(null, "填写错误", "提示", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				//添加数据
+				//添加数据，向数据库
 				Materials materials = new Materials(MD5Util.getMD5(), materialId, materialName, materialModel, materialUnit, 0, materialRemarks, new Date(), 0);
 				if(materialsService.addMaterial(materials)) {
 					setVisible(false);
@@ -156,6 +156,7 @@ public class MaterialAddPage extends JDialog {
 		contentPanel.add(addBtn);
 		
 		JButton resetBtn = new JButton("重置");
+		//点击重置按钮清空数据
 		resetBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				materialIdField.setText("");

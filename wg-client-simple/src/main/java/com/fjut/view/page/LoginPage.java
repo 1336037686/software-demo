@@ -42,9 +42,6 @@ public class LoginPage extends JFrame {
 	private JTextField usernameFiled;
 	private JPasswordField passwordField;
 
-	/**
-	 * Create the frame.
-	 */
 	public LoginPage() {
 		setTitle("登陆界面");
 		setResizable(false);
@@ -104,17 +101,18 @@ public class LoginPage extends JFrame {
 		JButton loginBtn = new JButton("登陆");
 		//登陆操作
 		loginBtn.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
-				//默认用户名密码为root
+				//获取用户名和密码
 				String uname = usernameFiled.getText();
 				String pwd = passwordField.getText();
+				//数据校验
 				boolean dataCheck = dataCheck(uname, pwd);
 				if(!dataCheck) {
 					JOptionPane.showMessageDialog(null, "用户名密码输入错误", "提示", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				
+				//封装数据
 				User user = new User();
 				user.setUserId(uname);
 				user.setPassword(pwd);
@@ -124,10 +122,12 @@ public class LoginPage extends JFrame {
 					user.setPermission(0);
 				}
 				
+				//用户登录
 				if(userService.login(user)) {
-	                setVisible(false);// 本窗口隐藏,
+	                setVisible(false);// 登陆成功，本窗口隐藏
 	                //打开home窗口
 	                ((HomePage)SpringContextUtils.getBean("HomePage")).setVisible(true);
+	                //销毁窗口
 					dispose();
 				} else {
 					JOptionPane.showMessageDialog(contentPane, "登录失败", "message", JOptionPane.ERROR_MESSAGE);
@@ -154,6 +154,5 @@ public class LoginPage extends JFrame {
 	
 	private boolean dataCheck(String userName, String password) {
 		return !DataUtil.isNull(userName) && !DataUtil.isNull(password);
-		
 	}
 }

@@ -72,10 +72,12 @@ public class MaterialInDetailPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				ComboxVo materialSelect = (ComboxVo) materialComboBox.getSelectedItem();
 				String sumStr = sumField.getText();
+				//判断是否已经添加当前物料
 				if(selectMaterial.contains(materialSelect.getKey())) {
 					JOptionPane.showMessageDialog(null, "不能重复添加", "提示", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				//数据检验
 				if(DataUtil.isNull(sumStr) && !DataUtil.isIntStr(sumStr)) {
 					JOptionPane.showMessageDialog(null, "输入错误", "提示", JOptionPane.ERROR_MESSAGE);
 					return;
@@ -85,11 +87,17 @@ public class MaterialInDetailPanel extends JPanel {
 					JOptionPane.showMessageDialog(null, "数量不能小于或等于0", "提示", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				//设置isOk（当前订单小条目）为确认状态
 				isOk = true;
+				//设置确认按钮为不可点击状态
 				okBtn.setEnabled(false);
+				//设置修改按钮为可点击状态
 				updateBtn.setEnabled(true);
+				//设置下拉列表不可选择
 				materialComboBox.setEnabled(false);
+				//设置数量选择为不可选择
 				sumField.setEnabled(false);
+				//添加物料条目到Set集合中，该集合表示已经确认的物料订单
 				selectMaterial.add(materialSelect.getKey());
 				materialsSellDetail = new MaterialsSellDetail(0, materialsSellId, materialSelect.getKey(), total);
 			}
@@ -102,11 +110,17 @@ public class MaterialInDetailPanel extends JPanel {
 		updateBtn.setEnabled(false);
 		updateBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//点击修改时，从保存的集合中删除当前物料订单
 				selectMaterial.remove(materialsSellDetail.getMaterialsId());
+				//设置isOk为未确认状态
 				isOk = false;
+				//设置确认按钮可以点击
 				okBtn.setEnabled(true);
+				//设置更新按钮不能点击
 				updateBtn.setEnabled(false);
+				//设置物料下拉菜单可以选择
 				materialComboBox.setEnabled(true);
+				//设置数量为可以编辑
 				sumField.setEnabled(true);
 			}
 		});

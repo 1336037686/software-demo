@@ -7,4 +7,9 @@ package com.fjut.aop.constant;
  */
 public interface WarehouseConst {
 
+	/**
+	 * 进出仓操作
+	 */
+	int HANDLER = 1;
+	
 }

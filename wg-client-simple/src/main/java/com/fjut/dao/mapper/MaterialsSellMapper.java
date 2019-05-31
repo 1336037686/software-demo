@@ -35,11 +35,18 @@ public interface MaterialsSellMapper {
 	@Delete("delete from materialsSell where id = #{id}")
 	public int deleteMaterialsSellById(String id);
 
+
 	/**
 	 * 根据关键字查询
 	 */
-	@Select("SELECT materialsSell.id,user.username,materialsSell.date,materialsSell.type,materialsSell.remarks FROM materialsSell,user WHERE materialsSell.userId = user.id and (materialsSell.id = #{input} or materialsSell.type = #{input}) ORDER BY materialsSell.date DESC")
-	public List<MaterialsSellVo> searchMaterialSell(Object input);
+	@Select("SELECT materialsSell.id,user.username,materialsSell.date,materialsSell.type,materialsSell.remarks FROM materialsSell,user WHERE materialsSell.userId = user.id AND (materialsSell.id = #{input} OR user.username LIKE  BINARY CONCAT(CONCAT('%', #{input}, '%'))) ORDER BY materialsSell.date DESC")
+	public List<MaterialsSellVo> searchMaterialSell(String input);
+	
+	/**
+	 * 根据进出仓类型查询
+	 */
+	@Select("SELECT materialsSell.id,user.username,materialsSell.date,materialsSell.type,materialsSell.remarks FROM materialsSell,user WHERE materialsSell.userId = user.id AND (materialsSell.type = #{input}) ORDER BY materialsSell.date DESC")
+	public List<MaterialsSellVo> searchMaterialSell2(int input);
 	
 	/**
 	 * 查询订单所有年
@@ -56,7 +63,7 @@ public interface MaterialsSellMapper {
 	/**
 	 * 获取某个物料在某个时间段内的进出仓记录
 	 */
-	@Select("SELECT materialsSell.date as date, SUM(materialsSellDetail.total) as sum FROM materialsSell,materialsSellDetail,materials "
+	@Select("SELECT SUM(materialsSellDetail.total) as sum, MONTH(materialsSell.date) as month, YEAR(materialsSell.date) as year FROM materialsSell,materialsSellDetail,materials "
 			+ "WHERE "
 			+ "(materialsSell.id = materialsSellDetail.materialsSellId) "
 			+ "AND (materialsSellDetail.materialsId = materials.id) "
@@ -64,8 +71,8 @@ public interface MaterialsSellMapper {
 			+ "AND (MONTH(materialsSell.date) >= #{month1} AND MONTH(materialsSell.date) <= #{month2}) "
 			+ "AND (YEAR(materialsSell.date) = #{year}) "
 			+ "AND (materialsSell.type = #{type}) "
-			+ "GROUP BY MONTH(materialsSell.date) "
-			+ "ORDER BY MONTH(materialsSell.date)")
+			+ "GROUP BY year,month "
+			+ "ORDER BY month")
 	public List<ChartVo> getChartData(@Param("materialsId") String materialsId, @Param("year") String year, @Param("month1") int month1, @Param("month2") int month2, @Param("type") int type);
 
 	/**

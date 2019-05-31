@@ -33,8 +33,9 @@ import com.fjut.view.page.MaterialsInOutPrintPage;
 
 /**
  * 报表管理面板
- * @author LGX
- *
+ * @Scope("prototype") 设置为动态创建，每调用一次当前类就创建一次
+ * @Component("FormManagerPanel") 设置当前为组件
+ * @Lazy 设置为懒加载
  */
 @Lazy
 @Scope("prototype")
@@ -101,9 +102,11 @@ public class FormManagerPanel extends JPanel {
 		panel.add(monthComBox2);
 		
 		JButton lookBtn = new JButton("查看");
+		//查看图表
 		lookBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ComboxVo material =  (ComboxVo) materialsComboBox.getSelectedItem();
+				//获取时间区间
 				String year = (String) yearComboBox.getSelectedItem();
 				int month1 = (int) monthComBox1.getSelectedItem();
 				int month2 = (int) monthComBox2.getSelectedItem();
@@ -111,9 +114,12 @@ public class FormManagerPanel extends JPanel {
 					JOptionPane.showMessageDialog(null, "月份区间选择错误", "提示", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				//删除原有图标
 				if(chartPanel != null) panel_1.remove(chartPanel);
+				//创建新的报表
 				chartPanel = ChartComponent.getChartPanel(material.getKey(), year, month1, month2);
 				panel_1.add(chartPanel);
+				//刷新
 				panel_1.validate();
 			}
 		});
@@ -161,6 +167,7 @@ public class FormManagerPanel extends JPanel {
 					JOptionPane.showMessageDialog(null, "月份区间选择错误", "提示", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				//创建一个Frame窗口用于显示创建的Chart图表
 				ChartComponent.createChartFrame(material.getKey(), year, month1, month2);
 			}
 		});
@@ -170,6 +177,7 @@ public class FormManagerPanel extends JPanel {
 		JButton btnNewButton = new JButton("打印进出仓订单");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//显示打印进出仓订单界面
 				new MaterialsInOutPrintPage().setVisible(true);
 			}
 		});
@@ -179,6 +187,7 @@ public class FormManagerPanel extends JPanel {
 		JButton button_1 = new JButton("打印仓库账本");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//显示打印仓库账本
 				new MaterialsBillPrintPage().setVisible(true);
 			}
 		});
@@ -191,6 +200,7 @@ public class FormManagerPanel extends JPanel {
 		JButton flushBtn = new JButton("刷新");
 		flushBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//重新加载数据
 				init(materialsComboBox, yearComboBox, monthComBox1, monthComBox2);
 			}
 		});
@@ -198,6 +208,13 @@ public class FormManagerPanel extends JPanel {
 		panel.add(flushBtn);
 	}
 	
+	/**
+	 * 初始化
+	 * @param materialsComboBox
+	 * @param yearComboBox
+	 * @param monthComBox1 
+	 * @param monthComBox2
+	 */
 	public void init(JComboBox materialsComboBox, JComboBox yearComboBox, JComboBox monthComBox1, JComboBox monthComBox2) {
 		//清空
 		materialsComboBox.removeAllItems();

@@ -18,6 +18,11 @@ import javax.swing.border.EmptyBorder;
 
 import com.fjut.pojo.Version;
 
+/**
+ * 应用更新界面
+ * @author LGX
+ *
+ */
 @SuppressWarnings("all")
 public class UpdatePage extends JDialog {
 

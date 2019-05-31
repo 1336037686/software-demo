@@ -9,9 +9,9 @@ public interface MaterialsSellDetailService {
 	 */
 	public Object[][] MaterialsSellDetailByMaterialsSellId(String materialsSellId);
 	
-	/**
-	 * 根据id删除订单详情
-	 * @return
-	 */
-	public boolean deleteMaterialsSellDetailById(int id) throws Exception;
+//	/**
+//	 * 根据id删除订单详情
+//	 * @return
+//	 */
+//	public boolean deleteMaterialsSellDetailById(int id) throws Exception;
 }

@@ -1,5 +1,10 @@
 package com.fjut.pojo;
 
+/**
+ * 更新版本信息实体类
+ * @author LGX
+ *
+ */
 public class Version {
 	private double version;
 	private String filePath;

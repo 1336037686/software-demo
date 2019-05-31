@@ -38,7 +38,7 @@ public interface UserMapper {
 	public User getUserByUserId(String userId);
 	
 	/**
-	 * 根据用户ID和密码获取用户
+	 * 根据用户ID和权限获取用户
 	 */
 	@Select("select * from user where userId = #{userId} and permission = #{permission}")
 	public User getUserByIdAndPermission( @Param("userId") String userId, @Param("permission") Integer permission);

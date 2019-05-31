@@ -17,6 +17,7 @@ public class ViewStart {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					//获取LoginPage界面实例并显示
 					SpringContextUtils.getBean(LoginPage.class).setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

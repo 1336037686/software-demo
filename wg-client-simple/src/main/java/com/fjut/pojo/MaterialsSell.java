@@ -51,7 +51,7 @@ public class MaterialsSell {
 
 	@Override
 	public String toString() {
-		return "MaterialsSell [id=" + id + ", date=" + date + ", userId=" + userId + ", remarks=" + remarks + ", type="
-				+ type + "]";
+		return "订单 [订单号=" + id + ", 订单日期=" + date + ", 用户ID=" + userId + ", 进出仓类型="
+				+ (type == 1 ? "进仓" : "出仓") + "]" + "\n + [备注=" + remarks + "]\n";
 	}
 }

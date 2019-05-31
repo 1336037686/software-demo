@@ -38,16 +38,21 @@ public class UserAspectHandler {
 	@Pointcut("@annotation(com.fjut.aop.annotation.SystemLogUserAspect)")
 	public void userAspect() {}
 	
-	
+	/**
+	 * 切面处理方法
+	 * @param joinPoint 切入点
+	 * @param annotation 自定义注解
+	 * @param result 方法boolean返回值
+	 */
 	@AfterReturning(pointcut = "userAspect() && @annotation(annotation)", returning = "result")
 	public void userAspectReturning(JoinPoint joinPoint, SystemLogUserAspect annotation, boolean result) {
-		//获取参数
+		//获取参数，获取切入方法参数
 		Object[] args = joinPoint.getArgs();
 		
-		//获取切面类型
+		//获取切面类型,获取注解值
 		int type = annotation.value();
 		
-		//用户登录
+		//用户登录,添加日志
 		if(UserConst.USERLOGIN == type) {
 			if(result == true) {
 				User user = (User)Session.getSession().get("user");
@@ -56,14 +61,14 @@ public class UserAspectHandler {
 			}	
 		}
 		
-		//用户删除
+		//用户删除,添加日志
 		if(UserConst.USERDELETE == type) {
 			User user = (User)Session.getSession().get("user");
 			SystemLog sl = new SystemLog(0, new Date(), SystemUtil.getLocalHost(), user.getId(), "[" + user.getUserName() + "] 删除用户：[id=" + args[0] + ", userId=" + args[1] + "]");
 			systemLogService.insertLog(sl);
 		}
 		
-		//用户注册
+		//用户注册,添加日志
 		if(UserConst.USERREGISTER == type) {
 			User user = (User)Session.getSession().get("user");
 			User register = (User) args[0];
@@ -73,7 +78,7 @@ public class UserAspectHandler {
 			}
 		}
 		
-		//用户更改
+		//用户更改,添加日志
 		if(UserConst.USERUPDATE == type) {
 			User user = (User)Session.getSession().get("user");
 			User update = (User) args[0];

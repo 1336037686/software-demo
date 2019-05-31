@@ -56,11 +56,12 @@ public class MaterialManagerPanel extends JPanel {
 	private JComboBox materialUnitField;
 	private TableComponent table;
 	
+	//物料单位
 	private String[] materialUnits = {"件", "套", "公斤", "吨", "升", "米", "毫米", "个"};
 	private MaterialsService materialsService = SpringContextUtils.getBean(MaterialsService.class);
 	
 	// 表格数据
-	private Object[] columnNames = { "序号", "物料代码", "物料名称", "型号规格", "计量单位", "创建时间" };
+	private Object[] columnNames = { "序号", "物料代码", "物料名称", "型号规格", "计量单位", "库存数量", "创建时间" };
 	private Object[][] rowData;
 
 	/**
@@ -73,7 +74,9 @@ public class MaterialManagerPanel extends JPanel {
 		JButton materialAddBtn = new JButton("添加物料档案");
 		materialAddBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//创建MaterialAddPage实例对象
 				MaterialAddPage materialAddPage = (MaterialAddPage) SpringContextUtils.getBean("MaterialAddPage");
+				//设置物料界面显示
 				materialAddPage.setVisible(true);
 			}
 		});
@@ -88,11 +91,14 @@ public class MaterialManagerPanel extends JPanel {
 		JButton searchBtn = new JButton("搜索");
 		searchBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//获取搜索框数据
 				String searchInput = materialSearchField.getText();
+				//数据校验（是否为空）
 				if(DataUtil.isNull(searchInput)) {
 					JOptionPane.showMessageDialog(null, "输入为空，请重新输入", "提示", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				//更新用户列表
 				updateUserList(1, searchInput);
 			}
 		});
@@ -194,26 +200,33 @@ public class MaterialManagerPanel extends JPanel {
 		JButton updateBtn = new JButton("修改");
 		updateBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//确认框
 				if(JOptionPane.showConfirmDialog(null, "确认修改？") == 0) {
+						//获取选中的记录ID
 						String id = idField.getText();
+						//数据校验，如果为null，代表没有选中数据
 						if(DataUtil.isNull(id)) {
 							JOptionPane.showMessageDialog(null, "请先选择一条记录", "提示", JOptionPane.ERROR_MESSAGE);
 							return;
 						}
+						//获取修改数据
 						String materialId = materialIdField.getText();
 						String materialRemarks = materialRemarksFiled.getText();
 						String materialModel = materialModelField.getText();
 						String materialName = materialNameField.getText();
 						String materialUnit = (String) materialUnitField.getSelectedItem();
 						
+						//数据校验
 						boolean dataCheck = DataUtil.dataCheck(materialId, materialName, materialUnit, materialModel);
 						if(!dataCheck) {
 							JOptionPane.showMessageDialog(null, "填写错误", "提示", JOptionPane.ERROR_MESSAGE);
 							return;
 						}
+						//更新数据
 						try {
 							if(materialsService.updateMaterials(new Materials(id, materialId, materialName, materialModel, materialUnit, 0, materialRemarks, null, 0))) {
 								JOptionPane.showMessageDialog(null, "修改成功", "提示", JOptionPane.INFORMATION_MESSAGE);
+								//清空表单数据，将填写的表哥清空
 								clearField();
 							}
 						} catch (Exception e1) {
@@ -229,11 +242,14 @@ public class MaterialManagerPanel extends JPanel {
 		deleteBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(JOptionPane.showConfirmDialog(null, "确认删除？") == 0) {
+						//获取选中需要删除的记录ID
 						String id = idField.getText();
+						//数据校验
 						if(DataUtil.isNull(id)) {
 							JOptionPane.showMessageDialog(null, "请先选择一条记录", "提示", JOptionPane.ERROR_MESSAGE);
 							return;
 						}
+						//删除物料
 						try {
 							if(materialsService.deleteMaterials(id)) {
 								JOptionPane.showMessageDialog(null, "删除成功", "提示", JOptionPane.INFORMATION_MESSAGE);

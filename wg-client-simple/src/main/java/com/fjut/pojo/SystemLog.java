@@ -1,6 +1,5 @@
 package com.fjut.pojo;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.fjut.util.DateUtil;

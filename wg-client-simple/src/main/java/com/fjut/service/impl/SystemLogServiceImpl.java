@@ -20,12 +20,18 @@ public class SystemLogServiceImpl implements SystemLogService{
 	@Autowired
 	private SystemLogMapper systemLogMapper;
 
+	/**
+	 * 添加日志
+	 */
 	@Override
 	public boolean insertLog(SystemLog systemLog) {
 		int result = systemLogMapper.insertLog(systemLog);
 		return result > 0 ? true : false;
 	}
 
+	/**
+	 * 查找所有日志
+	 */
 	@Override
 	public List<SystemLog> selectLog() {
 		return systemLogMapper.selectLog();

@@ -14,8 +14,7 @@ public class InOutDataVo {
 	private String username;
 	
 	public InOutDataVo() {
-		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 	public InOutDataVo(String id, String materialsName, int total, int type, String date, String username) {
 		this.id = id;

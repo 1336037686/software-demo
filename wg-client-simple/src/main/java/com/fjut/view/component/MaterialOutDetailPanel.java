@@ -157,6 +157,12 @@ public class MaterialOutDetailPanel extends JPanel {
 		return materialsSellDetail;
 	}
 	
+	/**
+	 * 根据ID获取物料信息
+	 * @param id
+	 * @param materialsList
+	 * @return
+	 */
 	public Materials getMaterialById(String id, List<Materials> materialsList) {
 		if(materialsList == null) return null;
 		for (Materials materials : materialsList) {

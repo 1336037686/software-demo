@@ -44,7 +44,7 @@ public class MaterialsSellDetail {
 
 	@Override
 	public String toString() {
-		return "MaterialsSellDetail [id=" + id + ", materialsSellId=" + materialsSellId + ", materialsId=" + materialsId
-				+ ", total=" + total + "]";
+		return "进出仓详情 [id=" + id + ", 订单ID=" + materialsSellId + ", 物料ID=" + materialsId
+				+ ", 操作总数=" + total + "]";
 	}
 }

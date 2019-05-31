@@ -25,6 +25,10 @@ public class UpdateUtil {
 	@Value("${update-url-ip}")
 	private String urlPath;
 	
+	/**
+	 * 获取更新信息
+	 * @return
+	 */
 	public Version getInfoData() {
 	    try {
 	    	System.out.println(urlPath);
@@ -41,6 +45,7 @@ public class UpdateUtil {
 			br.close();
 			isr.close();
 			in.close();
+			//将JSON信息转换为Version对象
 			return JSON.parseObject(result.toString(), Version.class);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "获取更新失败", "提示", JOptionPane.ERROR_MESSAGE);

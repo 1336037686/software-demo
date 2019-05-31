@@ -19,6 +19,9 @@ import java.util.SortedMap;
 @SuppressWarnings("all")
 public class MD5Util {
 	
+	/**
+	 * 创建随机对象
+	 */
 	private static Random random = new Random();
 	
 	/**
@@ -26,6 +29,7 @@ public class MD5Util {
 	 * @return
 	 */
 	public static String getMD5() {
+		//拼接系统时间 + 2 个随机值
 		String msg = System.currentTimeMillis() + "" + random.nextInt(Integer.MAX_VALUE) + "" + random.nextInt(Integer.MAX_VALUE);
 		return md5(msg);
 	}

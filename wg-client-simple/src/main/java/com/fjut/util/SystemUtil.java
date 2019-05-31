@@ -17,6 +17,7 @@ public class SystemUtil {
 	public static String getLocalHost() {
 		InetAddress localHost = null;
 		try {
+			//获取主机地址
 			localHost = InetAddress.getLocalHost();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

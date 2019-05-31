@@ -30,15 +30,22 @@ public class POIUtil {
 			XSSFRow header = sheet.createRow(num++);
 			// 创建单元格，0代表第一行第一列
 			for (int i = 0; i < columnNames.length; i++) {
+				//设置excel表格某一行的值
 				header.createCell(i).setCellValue(columnNames[i]);
 			}
 			
 			for (int i = 0; i < data.length; i++) {
+				//设置操作行为下一行
 				XSSFRow row = sheet.createRow(num++);
 				for (int j = 0; j < data[i].length; j++) {
+					//设置excel表格某一行的值
 					row.createCell(j).setCellValue(data[i][j].toString());
 				}
 			}
+			
+			/**
+			 * 输出表格
+			 */
 			FileOutputStream fos = new FileOutputStream(target);
 			wb.write(fos);
 			fos.close();

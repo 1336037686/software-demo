@@ -66,7 +66,6 @@ public class Materials {
 
 	public Materials(String id, String materialsId, String materialsName, String model, String unit, int stockQuantity,
 			String remarks, Date createDate, int isDelete) {
-		super();
 		this.id = id;
 		this.materialsId = materialsId;
 		this.materialsName = materialsName;

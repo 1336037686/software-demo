@@ -116,11 +116,14 @@ public class UserManagerPanel extends JPanel {
 		JButton searchBtn = new JButton("搜索");
 		searchBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//获取搜索框信息
 				String input = userSelectField.getText();
+				//数据校验
 				if (input == null || "".equals(input.trim())) {
 					JOptionPane.showMessageDialog(null, "输入不能为空", "提示", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				//更新用户列表
 				updateUserList(1, input);
 			}
 		});
@@ -316,7 +319,7 @@ public class UserManagerPanel extends JPanel {
 						permission = 1;
 					}
 					
-					//具体权限
+					//拼接具体权限
 					if(authorityMaterialCheckBox.isSelected()) {
 						authority += "1-";
 					}

@@ -10,7 +10,15 @@ import lombok.Setter;
  */
 @Getter@Setter
 public class ComboxVo {
+	
+	/**
+	 * 下拉菜单Key
+	 */
 	private String key;
+	
+	/**
+	 * 下拉菜单Value
+	 */
 	private String value;
 	
 	@Override

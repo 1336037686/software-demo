@@ -25,7 +25,7 @@ public interface SystemLogMapper {
 	/**
 	 * 查找日志
 	 */
-	@Select("SELECT * FROM systemLog ORDER BY id DESC")
+	@Select("SELECT * FROM systemLog ORDER BY id ASC")
 	public List<SystemLog> selectLog();
 
 }

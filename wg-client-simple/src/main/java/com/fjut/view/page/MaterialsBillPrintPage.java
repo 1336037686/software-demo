@@ -23,6 +23,11 @@ import com.fjut.service.MaterialsService;
 import com.fjut.util.POIUtil;
 import com.fjut.util.SpringContextUtils;
 
+/**
+ * 打印物料仓库账单
+ * @author LGX
+ *
+ */
 @SuppressWarnings("all")
 public class MaterialsBillPrintPage extends JDialog {
 
@@ -125,6 +130,7 @@ public class MaterialsBillPrintPage extends JDialog {
 						data2[j-1] = data[j];
 					}
 					
+					//打印报表
 					if(POIUtil.createXlsx(file, columnNames1 , data1, columnNames2, data2)) {
 						JOptionPane.showMessageDialog(null, "导出成功", "提示", JOptionPane.INFORMATION_MESSAGE);
 						setVisible(false);
