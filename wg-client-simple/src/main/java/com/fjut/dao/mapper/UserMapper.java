@@ -22,33 +22,33 @@ public interface UserMapper {
 	/**
 	 * 添加用户
 	 */
-	@Insert("insert into user values(#{id}, #{userId}, #{password}, #{userName}, #{age}, #{userGender}, #{birthday}, #{registerDay}, #{identityNum}, #{birthPlace}, #{address}, #{phone}, #{permission}, #{authority})")
+	@Insert("insert into user values(#{id}, #{userId}, #{password}, #{userName}, #{age}, #{userGender}, #{birthday}, #{registerDay}, #{identityNum}, #{birthPlace}, #{address}, #{phone}, #{permission}, #{authority}, #{isDelete})")
 	public int addUser(User user);
 	
 	/**
 	 * 获取所有用户
 	 */
-	@Select("select * from user")
+	@Select("select * from user where isDelete = 0")
 	public List<User> getAllUser();
 	
 	/**
 	 * 根据用户代码获取用户
 	 */
-	@Select("select * from user where userId = #{userId}")
+	@Select("select * from user where userId = #{userId} and isDelete = 0")
 	public User getUserByUserId(String userId);
 	
 	/**
 	 * 根据用户ID和权限获取用户
 	 */
-	@Select("select * from user where userId = #{userId} and permission = #{permission}")
+	@Select("select * from user where userId = #{userId} and permission = #{permission} and isDelete = 0")
 	public User getUserByIdAndPermission( @Param("userId") String userId, @Param("permission") Integer permission);
 	
 	/**
 	 * 根据关键字查询用户
 	 */
-	@Select("select * from user where userid like  binary concat(concat('%', #{input}), '%')  or userName like binary concat(concat('%', #{input}), '%') or age like  binary concat(concat('%', #{input}), '%') "
+	@Select("select * from user where (userid like  binary concat(concat('%', #{input}), '%')  or userName like binary concat(concat('%', #{input}), '%') or age like  binary concat(concat('%', #{input}), '%') "
 			+ "or birthday like binary concat(concat('%', #{input}), '%') or identityNum like binary concat(concat('%', #{input}), '%') or birthPlace like binary concat(concat('%', #{input}), '%') "
-			+ "or address like binary concat(concat('%', #{input}), '%') or phone like binary concat(concat('%', #{input}), '%')")
+			+ "or address like binary concat(concat('%', #{input}), '%') or phone like binary concat(concat('%', #{input}), '%')) and isDelete = 0")
 	public List<User> getSearchUser(@Param("input") String input);
 	
 	/**
@@ -61,7 +61,8 @@ public interface UserMapper {
 	/**
 	 * 删除用户
 	 */
-	@Delete("delete from user where id = #{id} or userid = #{userId}")
+	//@Delete("delete from user where id = #{id} or userid = #{userId}")
+	@Update("update user set isDelete = 1 where id = #{id} or userid = #{userId}")
 	public int deleteUserById(@Param("id") String id, @Param("userId") String userId);
 
 }

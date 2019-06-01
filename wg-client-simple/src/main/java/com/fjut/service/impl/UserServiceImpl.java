@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService{
 	 */
 	@SystemLogUserAspect(UserConst.USERREGISTER)
 	public boolean register(User user) {
+		user.setIsDelete(0);
 		String userId = user.getUserId();
 		//判断当前用户是否存在
 		User findUser = userMapper.getUserByUserId(userId);

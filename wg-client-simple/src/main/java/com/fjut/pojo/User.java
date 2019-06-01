@@ -81,12 +81,18 @@ public class User {
 	 * 具体权限 1：物料管理，2：进出仓管理，3：报表管理，4：日志管理
 	 */
 	private String authority;
+	
+	/**
+	 * 是否删除: 0未删除,1删除
+	 */
+	private int isDelete;
 
 	public User() {}
 
 	public User(String id, String userId, String password, String userName, Integer userGender, Date birthday,
 			String identityNum, String birthPlace, String address, String phone, int permission, Integer age,
-			Date registerDay, String authority) {
+			Date registerDay, String authority, int isDelete) {
+		super();
 		this.id = id;
 		this.userId = userId;
 		this.password = password;
@@ -101,6 +107,7 @@ public class User {
 		this.age = age;
 		this.registerDay = registerDay;
 		this.authority = authority;
+		this.isDelete = isDelete;
 	}
 
 	@Override
@@ -108,6 +115,9 @@ public class User {
 		return "User [id=" + id + ", userId=" + userId + ", password=" + password + ", userName=" + userName
 				+ ", userGender=" + userGender + ", birthday=" + birthday + ", identityNum=" + identityNum
 				+ ", birthPlace=" + birthPlace + ", address=" + address + ", phone=" + phone + ", permission="
-				+ permission + ", age=" + age + ", registerDay=" + registerDay + ", authority=" + authority + "]";
-	}	
+				+ permission + ", age=" + age + ", registerDay=" + registerDay + ", authority=" + authority
+				+ ", isDelete=" + isDelete + "]";
+	}
+	
+	
 }

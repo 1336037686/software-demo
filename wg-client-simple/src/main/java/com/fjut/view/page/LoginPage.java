@@ -152,6 +152,7 @@ public class LoginPage extends JFrame {
 		contentPane.add(resetBtn);
 	}
 	
+	//数据校验
 	private boolean dataCheck(String userName, String password) {
 		return !DataUtil.isNull(userName) && !DataUtil.isNull(password);
 	}
