@@ -287,8 +287,11 @@ public class UserAddPage extends JDialog {
 				//注册
 				boolean register = userService.register(user);
 				if(register) {
+					JOptionPane.showMessageDialog(null, "添加成功", "Message", JOptionPane.INFORMATION_MESSAGE);
 					setVisible(false);
 					dispose();
+				}else {
+					JOptionPane.showMessageDialog(null, "添加失败", "Message", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});

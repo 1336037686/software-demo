@@ -61,13 +61,7 @@ public class UserServiceImpl implements UserService{
 		user.setPassword(MD5Util.md5(user.getPassword()));
 		//保存用户信息
 		int result = userMapper.addUser(user);
-		if(result == 1) {
-			JOptionPane.showMessageDialog(null, "添加成功", "Message", JOptionPane.INFORMATION_MESSAGE);
-			return true;
-		} else {
-			JOptionPane.showMessageDialog(null, "添加失败", "Message", JOptionPane.INFORMATION_MESSAGE);
-			return false;
-		}
+		return result == 1 ? true : false;
 	}
 
 	

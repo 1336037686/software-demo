@@ -82,6 +82,7 @@ public class MaterialInPage extends JDialog {
 	 * Create the dialog.
 	 */
 	public MaterialInPage() {
+		MaterialInDetailPanel.selectMaterial.clear();
 		setModal(true);
 		setBounds(100, 100, 683, 618);
 		setLocationRelativeTo(null);
@@ -175,8 +176,12 @@ public class MaterialInPage extends JDialog {
 		//删除已添加物品
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(detailPanelList.size() > 0) {					
-					JPanel panel = detailPanelList.get(detailPanelList.size() - 1);
+				if(detailPanelList.size() > 0) {
+					//删除
+					MaterialInDetailPanel panel = (MaterialInDetailPanel) detailPanelList.get(detailPanelList.size() - 1);
+					if(panel.selectMaterial.contains(panel.getMaterialsSellDetailData().getMaterialsId())) {
+						MaterialInDetailPanel.selectMaterial.remove(panel.getMaterialsSellDetailData().getMaterialsId());
+					}
 					inOutListPanel.remove(panel);
 					detailPanelList.remove(panel);
 					//点击删除数量-1
@@ -235,4 +240,6 @@ public class MaterialInPage extends JDialog {
 		submitBtn.setBounds(564, 546, 93, 23);
 		contentPanel.add(submitBtn);
 	}
+	
+	
 }

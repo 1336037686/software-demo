@@ -412,7 +412,7 @@ public class UserManagerPanel extends JPanel {
 		ListSelectionModel selectionModel = table.getSelectionModel();
 		selectionModel.addListSelectionListener(new ListSelectionListener() {
 			// 会响应两次，使用e.getValueIsAdjusting()判断，鼠标点击，getValueIsAdjusting() 返回True.
-			// 鼠标释放,getValueIsAdjusting() 返回False
+			// 鼠标释放,getValueIsAdjusting() 返回 False
 			public void valueChanged(ListSelectionEvent e) {
 				if (e.getValueIsAdjusting()) {
 					String str = e.getSource().toString();
@@ -512,12 +512,8 @@ public class UserManagerPanel extends JPanel {
 	 * @param input
 	 */
 	private void updateUserList(int type, String input) {
-		if (type == 0) {
-			rowData = userService.getAllUser();
-		}
-		if (type == 1) {
-			rowData = userService.getSearchUser(input);
-		}
+		if (type == 0) rowData = userService.getAllUser();
+		if (type == 1) rowData = userService.getSearchUser(input);
 		table.updateModel(rowData, columnNames);
 		clearField();
 	}

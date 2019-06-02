@@ -55,7 +55,7 @@ public interface UserMapper {
 	 * 更新用户
 	 */
 	@Update("update user set password = #{password}, userName = #{userName}, age = #{age}, userGender = #{userGender}, birthday = #{birthday}, identityNum = #{identityNum}, "
-			+ "birthPlace = #{birthPlace}, address = #{address}, phone = #{phone}, permission = #{permission}, authority = #{authority} where id = #{id} or userId = #{userId}")
+			+ "birthPlace = #{birthPlace}, address = #{address}, phone = #{phone}, permission = #{permission}, authority = #{authority} where id = #{id} and userId = #{userId}")
 	public int updateUser(User user);
 	
 	/**

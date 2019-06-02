@@ -65,9 +65,6 @@ public class MaterialOutPage extends JDialog {
 	
 	private int detailNum = 0;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		try {
 			MaterialOutPage dialog = new MaterialOutPage();
@@ -82,6 +79,7 @@ public class MaterialOutPage extends JDialog {
 	 * Create the dialog.
 	 */
 	public MaterialOutPage() {
+		MaterialInDetailPanel.selectMaterial.clear();
 		setModal(true);
 		setBounds(100, 100, 683, 618);
 		setLocationRelativeTo(null);

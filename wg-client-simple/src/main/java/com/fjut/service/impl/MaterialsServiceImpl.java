@@ -113,14 +113,15 @@ public class MaterialsServiceImpl implements MaterialsService {
 		List<Materials> materialsList = materialsMapper.getSearchMaterials(input);
 		//封装数据
 		if(materialsList != null) {			
-			Object[][] materialMSG = new Object[materialsList.size()][6];
+			Object[][] materialMSG = new Object[materialsList.size()][7];
 			for (int i = 0; i < materialsList.size(); i++) {
 				materialMSG[i][0] = i + 1;
 				materialMSG[i][1] = materialsList.get(i).getMaterialsId();
 				materialMSG[i][2] = materialsList.get(i).getMaterialsName();
 				materialMSG[i][3] = materialsList.get(i).getModel();
 				materialMSG[i][4] = materialsList.get(i).getUnit();
-				materialMSG[i][5] = DateUtil.dateFormate(materialsList.get(i).getCreateDate());
+				materialMSG[i][5] = materialsList.get(i).getStockQuantity();
+				materialMSG[i][6] = DateUtil.dateFormate(materialsList.get(i).getCreateDate());
 			}
 			return materialMSG;
 		}
